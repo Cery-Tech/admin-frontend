@@ -1,0 +1,6 @@
+# Ignore artifacts:
+.idea
+package-lock.json
+_proto/**
+proto/**
+buf_work_proto/**
