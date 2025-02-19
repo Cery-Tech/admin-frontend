@@ -1,5 +1,5 @@
 {
-  "include": ["**/*.ts", "**/*.tsx", "tailwind.config.cjs", "eslint.config.mjs"],
+  "include": ["**/*.ts", "**/*.tsx", "tailwind.config.js", "eslint.config.mjs"],
   "compilerOptions": {
     "target": "ES2022",
     "jsx": "react-jsx",

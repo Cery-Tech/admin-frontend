@@ -5,9 +5,10 @@ declare global {
       GOOGLE_CLIENT_ID: string;
       GOOGLE_CLIENT_SECRET: string;
 
-      NEXT_PUBLIC_ENV: 'staging' | 'production' | 'development' | 'preview';
-      NEXT_PUBLIC_USER_API_URL: string;
-      NEXT_PUBLIC_ADMIN_API_URL: string;
+      VITE_ENV: 'staging' | 'production' | 'development' | 'preview';
+      VITE_USER_API_URL: string;
+      VITE_ADMIN_API_URL: string;
+      VITE_EQUIPMENT_API_URL: string;
     }
   }
 }
