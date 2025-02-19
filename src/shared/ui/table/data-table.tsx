@@ -13,6 +13,7 @@ import {
   getFilteredRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import { useCallback } from 'react';
 
 import {
   Table,
@@ -33,6 +34,8 @@ type DataTableProps<TData, TValue> = {
   onChangeColumnFilters?: OnChangeFn<ColumnFiltersState>;
   globalFilter?: GlobalFilterTableState;
   onChangeGlobalFilter?: OnChangeFn<GlobalFilterTableState>;
+  getRowId?: (row: TData) => string;
+  keyProperty: keyof TData;
 } & (
   | {
       dragEnabled: true;
@@ -52,14 +55,19 @@ export function DataTable<TData, TValue>({
   onChangeColumnFilters,
   globalFilter,
   onChangeGlobalFilter,
+  getRowId,
+  keyProperty,
   ...props
 }: DataTableProps<TData, TValue>) {
+  const getId = useCallback((row: TData) => String(row[keyProperty!]), [keyProperty]);
+
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     enableExpanding: true,
     enableSorting: true,
+    getRowId: getRowId ?? getId,
     enableGlobalFilter: true,
     meta,
     onColumnFiltersChange: onChangeColumnFilters,
@@ -72,7 +80,7 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="rounded-md border flex flex-col overflow-auto">
+    <div className="rounded-md border flex flex-col overflow-auto max-h-[calc(100dvh-120px)]">
       <Table className="flex-[1_0_0]">
         <TableHeader className="sticky top-0 z-[2] bg-background">
           {table.getHeaderGroups().map((headerGroup) => (
