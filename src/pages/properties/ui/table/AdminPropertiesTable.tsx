@@ -145,7 +145,12 @@ export const AdminPropertiesTable = ({ properties, dialog, createDialog }: Props
         <Button onClick={createDialog.open}>Create Property</Button>
       </div>
       <div className="flex flex-col flex-1">
-        <DataTable columns={admin_properties_columns} data={filteredProperties} meta={tableMeta} />
+        <DataTable
+          columns={admin_properties_columns}
+          data={filteredProperties}
+          keyProperty="property_id"
+          meta={tableMeta}
+        />
       </div>
       <BaseDialog className="pb-4" isOpen={confirmDialog.isOpen} onClose={confirmDialog.close}>
         <DialogBody>

@@ -104,6 +104,7 @@ export const ParametersDraggableTable = ({ value, onChange, isAvailable }: Props
             value.find((item) => item.parameter_id === row.parameter_id)?.position ?? 0
           }
           getUniqueRowId={(row) => row.uniqueId}
+          keyProperty="uniqueId"
           onReorder={(prev, next) =>
             onChange(
               changeDragItemOrder(

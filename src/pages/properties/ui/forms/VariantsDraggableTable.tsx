@@ -98,6 +98,7 @@ export const VariantsDraggableTable = ({ value, onChange, isAvailable }: Props) 
             value.find((item) => item.variant_id === row.variant_id)?.position ?? 0
           }
           getUniqueRowId={(row) => row.uniqueId}
+          keyProperty="uniqueId"
           onReorder={(prev, next) =>
             onChange(
               changeDragItemOrder(

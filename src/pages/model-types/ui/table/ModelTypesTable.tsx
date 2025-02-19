@@ -95,6 +95,11 @@ export const ModelTypesTable = ({ list, dialog, createDialog }: Props) => {
     });
   }, [search, tableRows]);
 
+  const getRowId = useCallback(
+    (row: ModelType) => `${row.type_id}_${row.manufacturer_id}_${row.model_id}`,
+    []
+  );
+
   return (
     <div className="flex flex-col flex-1 p-4 gap-4">
       <div className="flex gap-4 items-end">
@@ -105,7 +110,13 @@ export const ModelTypesTable = ({ list, dialog, createDialog }: Props) => {
         <Button onClick={createDialog.open}>Create Relation</Button>
       </div>
       <div className="flex flex-col flex-1">
-        <DataTable columns={admin_properties_columns} data={filteredProperties} meta={tableMeta} />
+        <DataTable
+          columns={admin_properties_columns}
+          data={filteredProperties}
+          getRowId={getRowId}
+          keyProperty="type_id"
+          meta={tableMeta}
+        />
       </div>
       <BaseDialog className="pb-4" isOpen={confirmDialog.isOpen} onClose={confirmDialog.close}>
         <DialogBody>
