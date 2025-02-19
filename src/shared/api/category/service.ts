@@ -16,7 +16,7 @@ class CategoryServ {
 
   delete = (body: CategoryDeleteRequest) => AdminApi.DELETE<object>(prefix(), { body });
 
-  update = (body: Category) => AdminApi.PUT_JSON<object>(prefix(), { body });
+  update = (body: Category) => AdminApi.PUT_JSON<object>(prefix(), body);
 }
 
 export const CategoryService = new CategoryServ();

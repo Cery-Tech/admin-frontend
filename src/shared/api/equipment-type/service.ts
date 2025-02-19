@@ -16,7 +16,7 @@ class EquipmentTypeServ {
 
   delete = (body: EquipmentTypeDeleteRequest) => AdminApi.DELETE<object>(prefix(), { body });
 
-  update = (body: EquipmentType) => AdminApi.PUT_JSON<object>(prefix(), { body });
+  update = (body: EquipmentType) => AdminApi.PUT_JSON<object>(prefix(), body);
 }
 
 export const EquipmentTypeService = new EquipmentTypeServ();

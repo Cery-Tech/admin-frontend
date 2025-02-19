@@ -11,7 +11,7 @@ class ModelServ {
 
   delete = (body: ModelDeleteRequest) => AdminApi.DELETE<object>(prefix(), { body });
 
-  update = (body: Model) => AdminApi.PUT_JSON<object>(prefix(), { body });
+  update = (body: Model) => AdminApi.PUT_JSON<object>(prefix(), body);
 }
 
 export const ModelService = new ModelServ();

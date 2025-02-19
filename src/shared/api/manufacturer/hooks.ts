@@ -17,7 +17,7 @@ export const useGetManufacturers = (
   });
 };
 
-export const useCreateCategory = () => {
+export const useCreateManufacturer = () => {
   return useMutation({
     mutationFn: ManufacturerService.create,
     onSuccess: () => {
@@ -26,7 +26,7 @@ export const useCreateCategory = () => {
   });
 };
 
-export const useDeleteCategory = () => {
+export const useDeleteManufacturer = () => {
   return useMutation({
     mutationFn: ManufacturerService.delete,
     onSuccess: () => {
@@ -35,7 +35,7 @@ export const useDeleteCategory = () => {
   });
 };
 
-export const useUpdateCategory = () => {
+export const useUpdateManufacturer = () => {
   return useMutation({
     mutationFn: ManufacturerService.update,
     onSuccess: () => {

@@ -24,7 +24,7 @@ export const TextField = ({ label, error, description, wrapperProps, ...props }:
         <Input {...props} />
       </FormControl>
       {!!description && <FormDescription>{description}</FormDescription>}
-      {!!error && <FormMessage>{error}</FormMessage>}
+      <FormMessage>{error}</FormMessage>
     </FormItem>
   );
 };

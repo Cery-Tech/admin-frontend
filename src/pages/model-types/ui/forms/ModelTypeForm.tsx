@@ -1,9 +1,9 @@
 import type { ModelTypeFormPack } from '../../model/form';
 
 import { useMemo } from 'react';
-import { Controller, useWatch } from 'react-hook-form';
+import { useWatch } from 'react-hook-form';
 
-import { FormItem, FormLabel } from '@/components/ui/form';
+import { FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 
 import { useGetManufacturers } from '@/shared/api/manufacturer/hooks';
 import { useGetModels } from '@/shared/api/model/hooks';
@@ -29,7 +29,7 @@ export const ModelTypeForm = ({ formPack }: Props) => {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-col gap-4">
-        <Controller
+        <FormField
           control={formPack.control}
           name="manufacturer_id"
           render={({ field }) => (
@@ -43,11 +43,12 @@ export const ModelTypeForm = ({ formPack }: Props) => {
                 value={field.value.toString()}
                 onChange={(value) => field.onChange(Number(value))}
               />
+              <FormMessage />
             </FormItem>
           )}
         />
 
-        <Controller
+        <FormField
           control={formPack.control}
           name="model_id"
           render={({ field }) => (
@@ -70,11 +71,13 @@ export const ModelTypeForm = ({ formPack }: Props) => {
                   }
                 }}
               />
+
+              <FormMessage />
             </FormItem>
           )}
         />
 
-        <Controller
+        <FormField
           control={formPack.control}
           name="type_id"
           render={({ field }) => (
@@ -85,6 +88,7 @@ export const ModelTypeForm = ({ formPack }: Props) => {
                 value={field.value.toString()}
                 onChange={(value) => field.onChange(Number(value))}
               />
+              <FormMessage />
             </FormItem>
           )}
         />
