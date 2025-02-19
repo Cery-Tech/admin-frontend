@@ -22,7 +22,7 @@ export const CreatePropertyDialog = memo(function CreatePropertyForm({
   isOpen,
   onClose,
 }: Props) {
-  const { mutate } = useCreateAdminPropertyMutation();
+  const { mutate, isPending } = useCreateAdminPropertyMutation();
 
   const form = useAdminPropertyForm({
     resetOptions: {
@@ -69,6 +69,7 @@ export const CreatePropertyDialog = memo(function CreatePropertyForm({
   return (
     <AppDialog
       isOpen={isOpen}
+      processing={isPending}
       rightBtnTitle="Add Field"
       slotProps={{
         base: {

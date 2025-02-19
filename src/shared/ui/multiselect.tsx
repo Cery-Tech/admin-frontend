@@ -265,7 +265,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
         </PopoverTrigger>
         <PopoverContent
           align="start"
-          className="w-auto p-0"
+          className="p-0 w-(--radix-popper-anchor-width)"
           onEscapeKeyDown={() => setIsPopoverOpen(false)}
         >
           <Command className="pointer-events-auto" shouldFilter={false}>

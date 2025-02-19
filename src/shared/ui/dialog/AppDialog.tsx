@@ -46,6 +46,7 @@ export const AppDialog = function AppDialog({
         {children}
         <DialogFooter {...slotProps?.footer}>
           <Button
+            variant="outline"
             onClick={onClose}
             {...slotProps?.leftBtn}
             className={twMerge(clsx('border-default-200', slotProps?.leftBtn?.className))}

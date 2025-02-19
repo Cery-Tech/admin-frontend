@@ -19,7 +19,7 @@ class Admin {
   };
 
   deleteField = ({ property_id }: { property_id: number }) => {
-    return AdminApi.DELETE<object>(prefix(`/${property_id}`));
+    return AdminApi.DELETE<object>(prefix(), { body: { property_id } });
   };
 }
 

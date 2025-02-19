@@ -32,7 +32,7 @@ export const useVehicleCategories = (
   options?: UseNonRequiredQueryOptions<CategoriesGetResponse, VehicleCategoriesHookResponse>
 ) => {
   return useQuery({
-    queryKey: QueryKeys.Categories(params),
+    queryKey: QueryKeys.Categories,
     queryFn: () => ReferencesService.getCategoriesList(params),
     select(data) {
       return {

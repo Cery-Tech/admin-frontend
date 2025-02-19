@@ -5,11 +5,13 @@ export const EQUIPMENT_API_URL = import.meta.env.VITE_EQUIPMENT_API_URL;
 export const QueryKeys = {
   User: ['user'],
 
-  Categories: (params?: object) => (params ? ['categories', params] : ['categories']),
+  Categories: ['categories'],
   Industries: ['industries'],
   Types: ['types'],
   Manufacturers: ['manufacturers'],
   AdminProperties: ['admin-properties'],
+  ModelTypes: ['model-types'],
+  Models: ['models'],
 };
 
 export const AuthKeys = {

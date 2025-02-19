@@ -21,7 +21,7 @@ type Props = {
 } & OpenCloseProps;
 
 export const EditPropertyDialog = memo(function EditPropertyDialog(props: Props) {
-  const { mutate } = useUpdateAdminPropertyMutation();
+  const { mutate, isPending } = useUpdateAdminPropertyMutation();
   const form = useAdminPropertyForm({
     values: props.property
       ? {
@@ -88,6 +88,7 @@ export const EditPropertyDialog = memo(function EditPropertyDialog(props: Props)
   return (
     <AppDialog
       isOpen={props.isOpen}
+      processing={isPending}
       slotProps={{
         base: {
           size: '4xl',
