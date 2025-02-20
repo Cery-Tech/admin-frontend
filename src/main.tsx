@@ -7,7 +7,8 @@ import { routeTree } from './routeTree.gen';
 
 import './styles.css';
 
-import reportWebVitals from './reportWebVitals.ts';
+import reportWebVitals from './reportWebVitals';
+import { applyDevUtils } from './shared/utils/dev';
 
 // Create a new router instance
 const router = createRouter({ routeTree });
@@ -36,3 +37,5 @@ if (!rootElement.innerHTML) {
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+
+applyDevUtils();
