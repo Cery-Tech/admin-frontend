@@ -108,7 +108,7 @@ export const IndustryTable = ({ list, dialog, createDialog }: Props) => {
           meta={tableMeta}
         />
       </div>
-      <BaseDialog className="pb-4" isOpen={confirmDialog.isOpen} onClose={confirmDialog.close}>
+      <BaseDialog isOpen={confirmDialog.isOpen} onClose={confirmDialog.close}>
         <DialogBody>
           <DialogTitle>{confirmDialog.state?.title ?? ''}</DialogTitle>
           {confirmDialog.state?.children}
