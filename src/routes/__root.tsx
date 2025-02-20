@@ -31,16 +31,15 @@ export const Route = createRootRoute({
           }}
         >
           <AppSidebar />
-          <div className="flex flex-col w-full h-full">
-            <main className="w-full flex flex-col h-full">
-              <Outlet />
-            </main>
-          </div>
-          <Suspense>
-            <TanStackRouterDevtools />
-          </Suspense>
-          <Toaster />
+          <main className="flex flex-col w-full overflow-auto">
+            <Outlet />
+          </main>
         </SidebarProvider>
+
+        <Suspense>
+          <TanStackRouterDevtools />
+        </Suspense>
+        <Toaster />
       </QueryClientProvider>
     </DndProvider>
   ),
