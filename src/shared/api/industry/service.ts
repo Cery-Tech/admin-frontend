@@ -14,7 +14,7 @@ class IndustryServ {
 
   create = (body: IndustryCreateRequest) => AdminApi.POST_JSON<object>(prefix(), body);
 
-  delete = (body: IndustryDeleteRequest) => AdminApi.DELETE<object>(prefix(), { body });
+  delete = (body: IndustryDeleteRequest) => AdminApi.DELETE_JSON<object>(prefix(), body);
 
   update = (body: Industry) => AdminApi.PUT_JSON<object>(prefix(), body);
 }

@@ -6,14 +6,13 @@ import type React from 'react';
 import { useCallback, useMemo, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
-import { DialogBody, DialogFooter, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { matchSorter, rankings } from 'match-sorter';
 
 import { useDeleteModelType } from '@/shared/api/model-types/hooks';
 import useDialogState from '@/shared/hooks/useDialog';
-import { BaseDialog } from '@/shared/ui/dialog/BaseDialog';
+import { AppDialog } from '@/shared/ui/dialog';
 import { DataTable } from '@/shared/ui/table';
 import { showErrorMessage, showSuccessMessage } from '@/shared/utils/toasts';
 
@@ -118,20 +117,20 @@ export const ModelTypesTable = ({ list, dialog, createDialog }: Props) => {
           meta={tableMeta}
         />
       </div>
-      <BaseDialog isOpen={confirmDialog.isOpen} onClose={confirmDialog.close}>
-        <DialogBody>
-          <DialogTitle>{confirmDialog.state?.title ?? ''}</DialogTitle>
-          {confirmDialog.state?.children}
-          <DialogFooter>
-            <Button variant="outline" onClick={confirmDialog.close}>
-              Cancel
-            </Button>
-            <Button variant="destructive" onClick={confirmDialog.state?.onConfirm}>
-              Confirm
-            </Button>
-          </DialogFooter>
-        </DialogBody>
-      </BaseDialog>
+      <AppDialog
+        isOpen={confirmDialog.isOpen}
+        processing={confirmDialog.processing}
+        slotProps={{
+          rightBtn: {
+            variant: 'destructive',
+          },
+        }}
+        title={confirmDialog?.state?.title}
+        onClose={confirmDialog.close}
+        onRightBtnClick={confirmDialog.state?.onConfirm}
+      >
+        {confirmDialog.state?.children}
+      </AppDialog>
     </div>
   );
 };

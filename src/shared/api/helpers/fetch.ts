@@ -153,15 +153,11 @@ export class FetchHelper {
     });
   };
 
-  DELETE = async <T = object>(
-    url: string,
-    { params, body, ...options }: Omit<FetchRequestInit, 'body'> & { body?: any } = {}
-  ) => {
+  DELETE = async <T = object>(url: string, { params, ...options }: FetchRequestInit = {}) => {
     const query = this.prepareParams(params);
 
     return this.JSON<T>(`${url}${query}`, {
       ...options,
-      body: body ? JSON.stringify(body) : undefined,
       method: 'DELETE',
     });
   };

@@ -9,7 +9,7 @@ class ModelServ {
 
   create = (body: ModelCreateRequest) => AdminApi.POST_JSON<object>(prefix(), body);
 
-  delete = (body: ModelDeleteRequest) => AdminApi.DELETE<object>(prefix(), { body });
+  delete = (body: ModelDeleteRequest) => AdminApi.DELETE_JSON<object>(prefix(), body);
 
   update = (body: Model) => AdminApi.PUT_JSON<object>(prefix(), body);
 }

@@ -14,7 +14,7 @@ class CategoryServ {
 
   create = (body: CategoryCreateRequest) => AdminApi.POST_JSON<object>(prefix(), body);
 
-  delete = (body: CategoryDeleteRequest) => AdminApi.DELETE<object>(prefix(), { body });
+  delete = (body: CategoryDeleteRequest) => AdminApi.DELETE_JSON<object>(prefix(), body);
 
   update = (body: Category) => AdminApi.PUT_JSON<object>(prefix(), body);
 }
