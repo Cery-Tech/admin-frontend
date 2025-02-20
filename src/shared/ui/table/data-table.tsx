@@ -13,7 +13,7 @@ import {
   getFilteredRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import {
   Table,
@@ -61,9 +61,24 @@ export function DataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const getId = useCallback((row: TData) => String(row[keyProperty!]), [keyProperty]);
 
+  const _columns = useMemo(
+    () => [
+      {
+        accessorKey: 'order_num',
+        header: () => <div>#</div>,
+        cell: ({ row }) => <div>{row.index + 1}</div>,
+        meta: {
+          className: 'border-r w-4',
+        },
+      } satisfies ColumnDef<TData, TValue>,
+      ...columns,
+    ],
+    [columns]
+  );
+
   const table = useReactTable({
     data,
-    columns,
+    columns: _columns,
     getCoreRowModel: getCoreRowModel(),
     enableExpanding: true,
     enableSorting: true,
@@ -120,7 +135,10 @@ export function DataTable<TData, TValue>({
               ) : (
                 <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell
+                      key={cell.id}
+                      className={(cell.column.columnDef.meta as { className?: string })?.className}
+                    >
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
