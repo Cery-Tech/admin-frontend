@@ -10,7 +10,7 @@ import { EditIndustryDialog } from './forms/EditIndustryDialog';
 import { IndustryTable } from './table';
 
 export const IndustryPage = () => {
-  const { data: { model: list = [] } = {} } = useGetIndustries();
+  const { data: { industry: list = [] } = {} } = useGetIndustries();
   const editDialog = useDialogState<Industry>();
 
   const createDialog = useDialog();

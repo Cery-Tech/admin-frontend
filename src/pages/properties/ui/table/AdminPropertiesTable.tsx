@@ -1,6 +1,6 @@
 import type { AdminPropertyTableMeta } from './types';
+import type { EquipmentType } from '@/shared/api/equipment-type/types';
 import type { AdminProperty, AdminPropertyTableItem } from '@/shared/api/properties/types';
-import type { VehicleType } from '@/shared/api/references/types';
 import type { UseDialogReturn, UseDialogStateReturn } from '@/shared/hooks/useDialog';
 import type React from 'react';
 
@@ -11,8 +11,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { matchSorter, rankings } from 'match-sorter';
 
+import { useGetEquipmentTypes } from '@/shared/api/equipment-type/hooks';
 import { useDeleteAdminPropertyMutation } from '@/shared/api/properties/hooks';
-import { useVehicleTypes } from '@/shared/api/references/hooks';
 import useDialogState from '@/shared/hooks/useDialog';
 import { AppDialog } from '@/shared/ui/dialog';
 import { DataTable } from '@/shared/ui/table';
@@ -37,7 +37,7 @@ export const AdminPropertiesTable = ({ properties, dialog, createDialog }: Props
     onConfirm: () => void;
   }>();
 
-  const { data: { keyMap } = {} } = useVehicleTypes();
+  const { data } = useGetEquipmentTypes();
 
   const toggleRow = useCallback((id?: number) => {
     setExpandedRowsSet((prev) => {
@@ -83,10 +83,19 @@ export const AdminPropertiesTable = ({ properties, dialog, createDialog }: Props
   );
 
   const tableRows = useMemo(() => {
+    const keyMap = data?.type.reduce(
+      (acc, type) => {
+        acc[type.type_id] = type;
+
+        return acc;
+      },
+      {} as Record<string, EquipmentType>
+    );
+
     const rows = properties.map((property) => {
       const linked_types = property.property_type
         ?.map((type) => keyMap?.[type.toString()])
-        .filter(Boolean) as VehicleType[];
+        .filter(Boolean) as EquipmentType[];
       const variantsText = property.property_variant?.map((variant) => variant.value).join(', ');
       const propertiesText = property.property_parameter
         ?.map((parameter) => parameter.name)
@@ -102,7 +111,7 @@ export const AdminPropertiesTable = ({ properties, dialog, createDialog }: Props
     });
 
     return rows;
-  }, [properties, keyMap]);
+  }, [properties, data]);
 
   const tableMeta = useMemo(() => {
     const meta: AdminPropertyTableMeta = {

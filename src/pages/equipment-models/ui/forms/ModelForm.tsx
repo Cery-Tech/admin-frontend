@@ -16,7 +16,7 @@ type Props = {
 };
 
 export const ModelForm = ({ formPack }: Props) => {
-  const { data: { model: makes = [] } = {} } = useGetManufacturers();
+  const { data: { manufacturer: makes = [] } = {} } = useGetManufacturers();
   const [years, setYears] = useState('');
 
   const yearsValue = useWatch({ control: formPack.control, name: 'avaible_years' });

@@ -1,5 +1,5 @@
-import type { CategoryTableItem, CategoryTableMeta } from './types';
-import type { Category } from '@/shared/api/category/types';
+import type { EquipmentTypeTableItem, EquipmentTypeTableMeta } from './types';
+import type { EquipmentType } from '@/shared/api/equipment-type/types';
 import type { UseDialogReturn, UseDialogStateReturn } from '@/shared/hooks/useDialog';
 import type React from 'react';
 
@@ -10,25 +10,27 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { matchSorter, rankings } from 'match-sorter';
 
-import { useDeleteCategory } from '@/shared/api/category/hooks';
+import { useGetCategories } from '@/shared/api/category/hooks';
+import { useDeleteEquipmentType } from '@/shared/api/equipment-type/hooks';
 import { useGetIndustries } from '@/shared/api/industry/hooks';
 import useDialogState from '@/shared/hooks/useDialog';
 import { AppDialog } from '@/shared/ui/dialog';
 import { DataTable } from '@/shared/ui/table';
 import { showErrorMessage, showSuccessMessage } from '@/shared/utils/toasts';
 
-import { category_columns } from './columns';
+import { equipment_type_columns } from './columns';
 
 type Props = {
-  list: Category[];
-  dialog: UseDialogStateReturn<Category>;
+  list: EquipmentType[];
+  dialog: UseDialogStateReturn<EquipmentType>;
   createDialog: UseDialogReturn;
 };
 
-export const CategoryTable = ({ list, dialog, createDialog }: Props) => {
+export const EquipmentTypeTable = ({ list, dialog, createDialog }: Props) => {
   const [search, setSearch] = useState('');
-  const { mutate: deleteRequest } = useDeleteCategory();
+  const { mutate: deleteRequest } = useDeleteEquipmentType();
   const { data } = useGetIndustries();
+  const { data: categoryData } = useGetCategories();
 
   const confirmDialog = useDialogState<{
     children?: React.ReactNode;
@@ -37,13 +39,13 @@ export const CategoryTable = ({ list, dialog, createDialog }: Props) => {
   }>();
 
   const deleteProperty = useCallback(
-    (item: Category) => {
-      if (!item.category_id) {
+    (item: EquipmentType) => {
+      if (!item.type_id) {
         return;
       }
 
       deleteRequest(
-        { category_id: item.category_id, industry_id: item.industry_id },
+        { type_id: item.type_id, industry_id: item.industry_id, category_id: item.category_id },
         {
           onSuccess: () => {
             showSuccessMessage('Deleted successfully');
@@ -62,19 +64,21 @@ export const CategoryTable = ({ list, dialog, createDialog }: Props) => {
     [deleteRequest, confirmDialog]
   );
 
-  const tableRows: CategoryTableItem[] = useMemo(() => {
+  const tableRows: EquipmentTypeTableItem[] = useMemo(() => {
     const industriesMap = new Map(data?.industry.map((i) => [i.industry_id, i.name]));
+    const categoriesMap = new Map(categoryData?.category.map((i) => [i.category_id, i.name]));
 
     return list.map((item) => ({
       ...item,
       industry_name: industriesMap.get(item.industry_id) ?? '',
+      category_name: categoriesMap.get(item.category_id) ?? '',
     }));
-  }, [list, data]);
+  }, [list, data, categoryData]);
 
   const tableMeta = useMemo(() => {
-    const meta: CategoryTableMeta = {
+    const meta: EquipmentTypeTableMeta = {
       onEdit: dialog.open,
-      onDelete: (row: Category) => {
+      onDelete: (row: EquipmentType) => {
         confirmDialog.open({
           title: 'Delete entity',
           children: <p>Are you sure you want to delete this item?</p>,
@@ -94,7 +98,7 @@ export const CategoryTable = ({ list, dialog, createDialog }: Props) => {
     }
 
     return matchSorter(tableRows, search, {
-      keys: ['name', 'industry_name'],
+      keys: ['name', 'industry_name', 'category_name'],
       threshold: rankings.CONTAINS,
     });
   }, [search, tableRows]);
@@ -106,13 +110,13 @@ export const CategoryTable = ({ list, dialog, createDialog }: Props) => {
           <Label htmlFor="search">Search anything</Label>
           <Input id="search" value={search} onChange={(e) => setSearch(e.target.value)} />
         </div>
-        <Button onClick={createDialog.open}>Create Category</Button>
+        <Button onClick={createDialog.open}>Create Equipment Type</Button>
       </div>
       <div className="flex flex-col flex-1">
         <DataTable
-          columns={category_columns}
+          columns={equipment_type_columns}
           data={filteredProperties}
-          keyProperty="category_id"
+          keyProperty="type_id"
           meta={tableMeta}
         />
       </div>

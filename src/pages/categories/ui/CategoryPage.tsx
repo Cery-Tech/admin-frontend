@@ -10,7 +10,7 @@ import { EditCategoryDialog } from './forms/EditCategoryDialog';
 import { CategoryTable } from './table';
 
 export const CategoryPage = () => {
-  const { data: { model: list = [] } = {} } = useGetCategories();
+  const { data: { category: list = [] } = {} } = useGetCategories();
   const editDialog = useDialogState<Category>();
 
   const createDialog = useDialog();

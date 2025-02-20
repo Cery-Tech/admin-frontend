@@ -5,7 +5,7 @@ export type Manufacturer = {
 };
 
 export type ManufacturerListResponse = {
-  model: Manufacturer[];
+  manufacturer: Manufacturer[];
 };
 
 export type ManufacturerCreateRequest = {

@@ -1,4 +1,4 @@
-import type { VehicleType } from '../references/types';
+import type { EquipmentType } from '../equipment-type/types';
 import type { FieldPropertyType } from './consts';
 
 export type PropertyVariant = {
@@ -28,7 +28,7 @@ export type AdminProperty = BaseAdminProperty & {
 };
 
 export type AdminPropertyTableItem = AdminProperty & {
-  linked_types?: VehicleType[];
+  linked_types?: EquipmentType[];
   typesText?: string;
   propertiesText?: string;
   variantsText?: string;

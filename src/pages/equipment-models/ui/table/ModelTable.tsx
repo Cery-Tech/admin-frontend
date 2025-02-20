@@ -64,7 +64,7 @@ export const ModelTable = ({ list, dialog, createDialog }: Props) => {
   );
 
   const makesMap = useMemo(() => {
-    return data?.model.reduce(
+    return data?.manufacturer.reduce(
       (acc, item) => {
         acc[item.manufacturer_id] = item.name;
 

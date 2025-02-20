@@ -15,8 +15,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
+import { useGetEquipmentTypes } from '@/shared/api/equipment-type/hooks';
 import { FieldPropertyType } from '@/shared/api/properties/consts';
-import { useVehicleTypes } from '@/shared/api/references/hooks';
 import { TextField } from '@/shared/ui/controlled-fields/input';
 import { MultiSelect } from '@/shared/ui/multiselect';
 import { showErrorMessage } from '@/shared/utils/toasts';
@@ -45,7 +45,7 @@ export const AdminPropertyForm = ({ formPack, existGroups, actions }: Props) => 
     return groups;
   }, [existGroups, group]);
 
-  const { data: { types = [] } = {} } = useVehicleTypes();
+  const { data: { type: types = [] } = {} } = useGetEquipmentTypes();
 
   const vehicleTypes = useMemo(() => {
     return types.map((type) => ({ ...type, number: 0 }));
@@ -185,7 +185,7 @@ export const AdminPropertyForm = ({ formPack, existGroups, actions }: Props) => 
               maxCount={3}
               options={vehicleTypes.map((type) => ({
                 label: type.name,
-                value: type.id.toString(),
+                value: type.type_id.toString(),
               }))}
               placeholder="Select types"
               variant="inverted"

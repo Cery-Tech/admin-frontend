@@ -1,17 +1,19 @@
-import type { CategoryFormPack } from '../../model/form';
+import type { EquipmentTypeFormPack } from '../../model/form';
 
 import { FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 
+import { useGetCategories } from '@/shared/api/category/hooks';
 import { useGetIndustries } from '@/shared/api/industry/hooks';
 import { Combobox } from '@/shared/ui/combobox';
 import { TextField } from '@/shared/ui/controlled-fields/input';
 
 type Props = {
-  formPack: CategoryFormPack;
+  formPack: EquipmentTypeFormPack;
 };
 
-export const CategoryForm = ({ formPack }: Props) => {
+export const EquipmentTypeForm = ({ formPack }: Props) => {
   const { data: { industry: industries = [] } = {} } = useGetIndustries();
+  const { data: { category: categories = [] } = {} } = useGetCategories();
 
   return (
     <div className="flex flex-col gap-2">
@@ -21,9 +23,27 @@ export const CategoryForm = ({ formPack }: Props) => {
           name="industry_id"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Make</FormLabel>
+              <FormLabel>Industry</FormLabel>
               <Combobox
                 options={industries.map(({ name, industry_id: id }) => ({
+                  value: id.toString(),
+                  label: name,
+                }))}
+                value={field.value.toString()}
+                onChange={(value) => field.onChange(Number(value))}
+              />
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={formPack.control}
+          name="category_id"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Category</FormLabel>
+              <Combobox
+                options={categories.map(({ name, category_id: id }) => ({
                   value: id.toString(),
                   label: name,
                 }))}

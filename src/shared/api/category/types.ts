@@ -6,7 +6,7 @@ export type Category = {
 };
 
 export type CategoryListResponse = {
-  model: Category[];
+  category: Category[];
 };
 
 export type CategoryCreateRequest = {

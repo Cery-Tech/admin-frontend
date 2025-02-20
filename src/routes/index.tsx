@@ -1,5 +1,13 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
-import { Briefcase, Factory, LinkIcon, SettingsIcon, TagsIcon, TruckIcon } from 'lucide-react';
+import {
+  Briefcase,
+  Factory,
+  ForkliftIcon,
+  LinkIcon,
+  SettingsIcon,
+  TagsIcon,
+  TruckIcon,
+} from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -41,6 +49,13 @@ const routesWithDescriptions = [
     title: 'Categories',
     description: 'View and edit categories. Categories are used to group equipment types.',
     icon: TagsIcon,
+  },
+
+  {
+    title: 'Types',
+    path: '/equipment-types',
+    description: 'View and edit equipment types. Equipment types are used to group equipment.',
+    icon: ForkliftIcon,
   },
   {
     path: '/manufacturers',
