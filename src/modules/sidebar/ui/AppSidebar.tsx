@@ -1,4 +1,4 @@
-import { Building, GroupIcon, Link, PlaneTakeoffIcon, SettingsIcon, TruckIcon } from 'lucide-react';
+import { Briefcase, Factory, LinkIcon, SettingsIcon, TagsIcon, TruckIcon } from 'lucide-react';
 
 import {
   Sidebar,
@@ -22,23 +22,23 @@ const items = [
   {
     title: 'Model - Types',
     url: '/model-types',
-    icon: Link,
+    icon: LinkIcon,
   },
   {
     title: 'Industries',
     url: '/industries',
-    icon: PlaneTakeoffIcon,
+    icon: Briefcase,
   },
 
   {
     title: 'Categories',
     url: '/categories',
-    icon: GroupIcon,
+    icon: TagsIcon,
   },
   {
     title: 'Manufacturers',
     url: '/manufacturers',
-    icon: Building,
+    icon: Factory,
   },
   {
     title: 'Models',
