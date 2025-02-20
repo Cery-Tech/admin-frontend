@@ -3,7 +3,7 @@ export type Model = {
   manufacturer_id: number;
   name: string;
   rate: number;
-  available_years: number[];
+  avaible_years: number[];
 };
 
 export type ModelListResponse = {
@@ -13,7 +13,7 @@ export type ModelListResponse = {
 export type ModelCreateRequest = {
   manufacturer_id: number;
   name: string;
-  available_years: number[];
+  avaible_years: number[];
 };
 
 export type ModelDeleteRequest = {
