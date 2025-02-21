@@ -29,7 +29,7 @@ export const EditModelDialog = memo(function EditModelDialog(props: Props) {
       : {
           name: '',
           manufacturer_id: 0,
-          avaible_years: [],
+          available_years: [],
         },
     resetOptions: {
       keepDefaultValues: true,

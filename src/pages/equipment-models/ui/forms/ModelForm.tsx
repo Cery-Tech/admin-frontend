@@ -19,21 +19,21 @@ export const ModelForm = ({ formPack }: Props) => {
   const { data: { manufacturer: makes = [] } = {} } = useGetManufacturers();
   const [years, setYears] = useState('');
 
-  const yearsValue = useWatch({ control: formPack.control, name: 'avaible_years' });
+  const yearsValue = useWatch({ control: formPack.control, name: 'available_years' });
 
   useEffect(() => {
     setYears((prev) => (!prev ? modelYearsString.create(yearsValue) : prev));
   }, [yearsValue]);
 
   useEffect(() => {
-    const prevYears = formPack.getValues('avaible_years');
+    const prevYears = formPack.getValues('available_years');
     const newYears = modelYearsString.parse(years);
 
     if (newYears.length === 0 && prevYears.length === 0) {
       return;
     }
 
-    formPack.setValue('avaible_years', modelYearsString.parse(years));
+    formPack.setValue('available_years', modelYearsString.parse(years));
   }, [years, formPack]);
 
   return (
@@ -65,7 +65,7 @@ export const ModelForm = ({ formPack }: Props) => {
 
         <FormField
           control={formPack.control}
-          name="avaible_years"
+          name="available_years"
           render={({ field }) => (
             <TextField
               {...field}

@@ -15,7 +15,7 @@ export type ModelFormPack = FormPack<ModelFormValues>;
 
 const schema = zodSchema<ModelFormValues>({
   name: z.string().nonempty('Name is required'),
-  avaible_years: z.array(z.number()).nonempty('Available years is required'),
+  available_years: z.array(z.number()).nonempty('Available years is required'),
   manufacturer_id: z.number().positive('Manufacturer is required'),
 });
 
@@ -24,7 +24,7 @@ export const useModelForm = (props?: UseFormProps<ModelFormValues>) => {
     defaultValues: {
       name: '',
       manufacturer_id: 0,
-      avaible_years: [],
+      available_years: [],
     },
     resolver: zodResolver(schema),
     ...props,

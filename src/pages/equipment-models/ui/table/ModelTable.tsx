@@ -78,7 +78,7 @@ export const ModelTable = ({ list, dialog, createDialog }: Props) => {
     return list.map((model) => ({
       ...model,
       manufacturer_name: makesMap?.[model.manufacturer_id] ?? '',
-      years_range: modelYearsString.create(model.avaible_years),
+      years_range: modelYearsString.create(model.available_years),
     }));
   }, [list, makesMap]);
 
@@ -105,7 +105,7 @@ export const ModelTable = ({ list, dialog, createDialog }: Props) => {
     }
 
     return matchSorter(tableRows, search, {
-      keys: ['name', 'manufacturer_name', 'years_range', 'avaible_years'],
+      keys: ['name', 'manufacturer_name', 'years_range', 'available_years'],
       threshold: rankings.CONTAINS,
     });
   }, [search, tableRows]);

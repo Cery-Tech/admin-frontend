@@ -21,7 +21,7 @@ export const CategoryForm = ({ formPack }: Props) => {
           name="industry_id"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Make</FormLabel>
+              <FormLabel>Industry</FormLabel>
               <Combobox
                 options={industries.map(({ name, industry_id: id }) => ({
                   value: id.toString(),
