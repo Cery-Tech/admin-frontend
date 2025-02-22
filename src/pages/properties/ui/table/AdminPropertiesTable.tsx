@@ -1,21 +1,20 @@
 import type { AdminPropertyTableMeta } from './types';
+import type { EquipmentType } from '@/shared/api/equipment-type/types';
 import type { AdminProperty, AdminPropertyTableItem } from '@/shared/api/properties/types';
-import type { VehicleType } from '@/shared/api/references/types';
 import type { UseDialogReturn, UseDialogStateReturn } from '@/shared/hooks/useDialog';
 import type React from 'react';
 
 import { useCallback, useMemo, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
-import { DialogBody, DialogFooter, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { matchSorter, rankings } from 'match-sorter';
 
+import { useGetEquipmentTypes } from '@/shared/api/equipment-type/hooks';
 import { useDeleteAdminPropertyMutation } from '@/shared/api/properties/hooks';
-import { useVehicleTypes } from '@/shared/api/references/hooks';
 import useDialogState from '@/shared/hooks/useDialog';
-import { BaseDialog } from '@/shared/ui/dialog/BaseDialog';
+import { AppDialog } from '@/shared/ui/dialog';
 import { DataTable } from '@/shared/ui/table';
 import { showErrorMessage, showSuccessMessage } from '@/shared/utils/toasts';
 
@@ -38,7 +37,7 @@ export const AdminPropertiesTable = ({ properties, dialog, createDialog }: Props
     onConfirm: () => void;
   }>();
 
-  const { data: { keyMap } = {} } = useVehicleTypes();
+  const { data } = useGetEquipmentTypes();
 
   const toggleRow = useCallback((id?: number) => {
     setExpandedRowsSet((prev) => {
@@ -84,10 +83,19 @@ export const AdminPropertiesTable = ({ properties, dialog, createDialog }: Props
   );
 
   const tableRows = useMemo(() => {
+    const keyMap = data?.type.reduce(
+      (acc, type) => {
+        acc[type.type_id] = type;
+
+        return acc;
+      },
+      {} as Record<string, EquipmentType>
+    );
+
     const rows = properties.map((property) => {
       const linked_types = property.property_type
         ?.map((type) => keyMap?.[type.toString()])
-        .filter(Boolean) as VehicleType[];
+        .filter(Boolean) as EquipmentType[];
       const variantsText = property.property_variant?.map((variant) => variant.value).join(', ');
       const propertiesText = property.property_parameter
         ?.map((parameter) => parameter.name)
@@ -103,7 +111,7 @@ export const AdminPropertiesTable = ({ properties, dialog, createDialog }: Props
     });
 
     return rows;
-  }, [properties, keyMap]);
+  }, [properties, data]);
 
   const tableMeta = useMemo(() => {
     const meta: AdminPropertyTableMeta = {
@@ -152,20 +160,20 @@ export const AdminPropertiesTable = ({ properties, dialog, createDialog }: Props
           meta={tableMeta}
         />
       </div>
-      <BaseDialog isOpen={confirmDialog.isOpen} onClose={confirmDialog.close}>
-        <DialogBody>
-          <DialogTitle>{confirmDialog.state?.title ?? ''}</DialogTitle>
-          {confirmDialog.state?.children}
-          <DialogFooter>
-            <Button variant="outline" onClick={confirmDialog.close}>
-              Cancel
-            </Button>
-            <Button variant="destructive" onClick={confirmDialog.state?.onConfirm}>
-              Confirm
-            </Button>
-          </DialogFooter>
-        </DialogBody>
-      </BaseDialog>
+      <AppDialog
+        isOpen={confirmDialog.isOpen}
+        processing={confirmDialog.processing}
+        slotProps={{
+          rightBtn: {
+            variant: 'destructive',
+          },
+        }}
+        title={confirmDialog?.state?.title}
+        onClose={confirmDialog.close}
+        onRightBtnClick={confirmDialog.state?.onConfirm}
+      >
+        {confirmDialog.state?.children}
+      </AppDialog>
     </div>
   );
 };

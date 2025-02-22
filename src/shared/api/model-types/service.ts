@@ -9,7 +9,7 @@ class MTService {
 
   create = (body: ModelTypeCreateRequest) => AdminApi.POST_JSON<object>(prefix(), body);
 
-  delete = (body: ModelTypeCreateRequest) => AdminApi.DELETE<object>(prefix(), { body });
+  delete = (body: ModelTypeCreateRequest) => AdminApi.DELETE_JSON<object>(prefix(), body);
 }
 
 export const ModelTypeService = new MTService();

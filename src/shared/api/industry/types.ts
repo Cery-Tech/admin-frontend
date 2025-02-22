@@ -5,7 +5,7 @@ export type Industry = {
 };
 
 export type IndustryListResponse = {
-  model: Industry[];
+  industry: Industry[];
 };
 
 export type IndustryCreateRequest = {

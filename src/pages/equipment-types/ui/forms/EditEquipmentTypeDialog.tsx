@@ -1,35 +1,36 @@
-import type { ModelFormValues } from '../../model/form';
-import type { Model } from '@/shared/api/model/types';
+import type { EquipmentTypeFormValues } from '../../model/form';
+import type { EquipmentType } from '@/shared/api/equipment-type/types';
 import type { OpenCloseProps } from '@/shared/types/ui/dialog';
 
 import { memo } from 'react';
 
 import { Form } from '@/components/ui/form';
 
-import { useUpdateModel } from '@/shared/api/model/hooks';
+import { useUpdateEquipmentType } from '@/shared/api/equipment-type/hooks';
 import { useFormPack } from '@/shared/hooks/useFormPack';
 import { AppDialog } from '@/shared/ui/dialog';
 import { showErrorMessage, showSuccessMessage } from '@/shared/utils/toasts';
 
-import { useModelForm } from '../../model/form';
-import { ModelForm } from './ModelForm';
+import { useEquipmentTypeForm } from '../../model/form';
+import { EquipmentTypeForm } from './EquipmentTypeForm';
 
 type Props = {
-  values: Model | null;
+  values: EquipmentType | null;
   existGroups?: string[];
 } & OpenCloseProps;
 
-export const EditModelDialog = memo(function EditModelDialog(props: Props) {
-  const { mutate, isPending } = useUpdateModel();
-  const form = useModelForm({
+export const EditEquipmentTypeDialog = memo(function EditEquipmentTypeDialog(props: Props) {
+  const { mutate, isPending } = useUpdateEquipmentType();
+  const form = useEquipmentTypeForm({
     values: props.values
       ? {
           ...props.values,
         }
       : {
           name: '',
-          manufacturer_id: 0,
-          available_years: [],
+          rate: 0,
+          industry_id: 0,
+          category_id: 0,
         },
     resetOptions: {
       keepDefaultValues: true,
@@ -43,17 +44,17 @@ export const EditModelDialog = memo(function EditModelDialog(props: Props) {
     props.onClose();
   };
 
-  const updateReq = (values: ModelFormValues) => {
+  const updateReq = (values: EquipmentTypeFormValues) => {
     if (!props.values) return;
 
-    const item: Model = {
+    const item: EquipmentType = {
       ...props.values,
       ...values,
     };
 
     mutate(item, {
       onSuccess: () => {
-        showSuccessMessage('Model updated');
+        showSuccessMessage('EquipmentType updated');
         closeDialog();
       },
       onError: (err) => showErrorMessage(err),
@@ -69,13 +70,13 @@ export const EditModelDialog = memo(function EditModelDialog(props: Props) {
           size: '4xl',
         },
       }}
-      title={`Edit ${props.values?.name ?? 'Model'}`}
+      title={`Edit ${props.values?.name ?? 'Equipment Type'}`}
       onClose={closeDialog}
       onRightBtnClick={form.handleSubmit(updateReq)}
     >
       <form className="py-2">
         <Form {...form}>
-          <ModelForm formPack={formPack} />
+          <EquipmentTypeForm formPack={formPack} />
         </Form>
       </form>
     </AppDialog>

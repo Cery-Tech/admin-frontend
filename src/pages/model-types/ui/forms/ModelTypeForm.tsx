@@ -5,9 +5,9 @@ import { useWatch } from 'react-hook-form';
 
 import { FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 
+import { useGetEquipmentTypes } from '@/shared/api/equipment-type/hooks';
 import { useGetManufacturers } from '@/shared/api/manufacturer/hooks';
 import { useGetModels } from '@/shared/api/model/hooks';
-import { useVehicleTypes } from '@/shared/api/references/hooks';
 import { Combobox } from '@/shared/ui/combobox';
 
 type Props = {
@@ -15,8 +15,8 @@ type Props = {
 };
 
 export const ModelTypeForm = ({ formPack }: Props) => {
-  const { data: { types = [] } = {} } = useVehicleTypes();
-  const { data: { model: makes = [] } = {} } = useGetManufacturers();
+  const { data: { type: types = [] } = {} } = useGetEquipmentTypes();
+  const { data: { manufacturer: makes = [] } = {} } = useGetManufacturers();
   const { data: { model = [] } = {} } = useGetModels();
 
   const makeId = useWatch({ control: formPack.control, name: 'manufacturer_id' });
@@ -84,7 +84,10 @@ export const ModelTypeForm = ({ formPack }: Props) => {
             <FormItem>
               <FormLabel>Type</FormLabel>
               <Combobox
-                options={types.map(({ name, id }) => ({ value: id.toString(), label: name }))}
+                options={types.map(({ name, type_id: id }) => ({
+                  value: id.toString(),
+                  label: name,
+                }))}
                 value={field.value.toString()}
                 onChange={(value) => field.onChange(Number(value))}
               />

@@ -1,4 +1,12 @@
-import { Briefcase, Factory, LinkIcon, SettingsIcon, TagsIcon, TruckIcon } from 'lucide-react';
+import {
+  Briefcase,
+  Factory,
+  ForkliftIcon,
+  LinkIcon,
+  SettingsIcon,
+  TagsIcon,
+  TruckIcon,
+} from 'lucide-react';
 
 import {
   Sidebar,
@@ -34,6 +42,12 @@ const items = [
     title: 'Categories',
     url: '/categories',
     icon: TagsIcon,
+  },
+
+  {
+    title: 'Types',
+    url: '/equipment-types',
+    icon: ForkliftIcon,
   },
   {
     title: 'Manufacturers',

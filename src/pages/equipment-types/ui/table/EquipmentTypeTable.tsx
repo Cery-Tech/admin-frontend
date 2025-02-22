@@ -1,5 +1,5 @@
-import type { ModelTableItem, ModelTableMeta } from './types';
-import type { Model } from '@/shared/api/model/types';
+import type { EquipmentTypeTableItem, EquipmentTypeTableMeta } from './types';
+import type { EquipmentType } from '@/shared/api/equipment-type/types';
 import type { UseDialogReturn, UseDialogStateReturn } from '@/shared/hooks/useDialog';
 import type React from 'react';
 
@@ -10,26 +10,27 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { matchSorter, rankings } from 'match-sorter';
 
-import { useGetManufacturers } from '@/shared/api/manufacturer/hooks';
-import { useDeleteModel } from '@/shared/api/model/hooks';
+import { useGetCategories } from '@/shared/api/category/hooks';
+import { useDeleteEquipmentType } from '@/shared/api/equipment-type/hooks';
+import { useGetIndustries } from '@/shared/api/industry/hooks';
 import useDialogState from '@/shared/hooks/useDialog';
 import { AppDialog } from '@/shared/ui/dialog';
 import { DataTable } from '@/shared/ui/table';
 import { showErrorMessage, showSuccessMessage } from '@/shared/utils/toasts';
 
-import { modelYearsString } from '../../utils/years';
-import { model_columns } from './columns';
+import { equipment_type_columns } from './columns';
 
 type Props = {
-  list: Model[];
-  dialog: UseDialogStateReturn<Model>;
+  list: EquipmentType[];
+  dialog: UseDialogStateReturn<EquipmentType>;
   createDialog: UseDialogReturn;
 };
 
-export const ModelTable = ({ list, dialog, createDialog }: Props) => {
+export const EquipmentTypeTable = ({ list, dialog, createDialog }: Props) => {
   const [search, setSearch] = useState('');
-  const { mutate: deleteRequest } = useDeleteModel();
-  const { data } = useGetManufacturers();
+  const { mutate: deleteRequest } = useDeleteEquipmentType();
+  const { data } = useGetIndustries();
+  const { data: categoryData } = useGetCategories();
 
   const confirmDialog = useDialogState<{
     children?: React.ReactNode;
@@ -38,13 +39,13 @@ export const ModelTable = ({ list, dialog, createDialog }: Props) => {
   }>();
 
   const deleteProperty = useCallback(
-    (item: Model) => {
-      if (!item.model_id) {
+    (item: EquipmentType) => {
+      if (!item.type_id) {
         return;
       }
 
       deleteRequest(
-        { model_id: item.model_id, manufacturer_id: item.manufacturer_id },
+        { type_id: item.type_id, industry_id: item.industry_id, category_id: item.category_id },
         {
           onSuccess: () => {
             showSuccessMessage('Deleted successfully');
@@ -63,29 +64,21 @@ export const ModelTable = ({ list, dialog, createDialog }: Props) => {
     [deleteRequest, confirmDialog]
   );
 
-  const makesMap = useMemo(() => {
-    return data?.manufacturer.reduce(
-      (acc, item) => {
-        acc[item.manufacturer_id] = item.name;
+  const tableRows: EquipmentTypeTableItem[] = useMemo(() => {
+    const industriesMap = new Map(data?.industry.map((i) => [i.industry_id, i.name]));
+    const categoriesMap = new Map(categoryData?.category.map((i) => [i.category_id, i.name]));
 
-        return acc;
-      },
-      {} as Record<number, string>
-    );
-  }, [data]);
-
-  const tableRows: ModelTableItem[] = useMemo(() => {
-    return list.map((model) => ({
-      ...model,
-      manufacturer_name: makesMap?.[model.manufacturer_id] ?? '',
-      years_range: modelYearsString.create(model.available_years),
+    return list.map((item) => ({
+      ...item,
+      industry_name: industriesMap.get(item.industry_id) ?? '',
+      category_name: categoriesMap.get(item.category_id) ?? '',
     }));
-  }, [list, makesMap]);
+  }, [list, data, categoryData]);
 
   const tableMeta = useMemo(() => {
-    const meta: ModelTableMeta = {
+    const meta: EquipmentTypeTableMeta = {
       onEdit: dialog.open,
-      onDelete: (row: Model) => {
+      onDelete: (row: EquipmentType) => {
         confirmDialog.open({
           title: 'Delete entity',
           children: <p>Are you sure you want to delete this item?</p>,
@@ -105,7 +98,7 @@ export const ModelTable = ({ list, dialog, createDialog }: Props) => {
     }
 
     return matchSorter(tableRows, search, {
-      keys: ['name', 'manufacturer_name', 'years_range', 'available_years'],
+      keys: ['name', 'industry_name', 'category_name'],
       threshold: rankings.CONTAINS,
     });
   }, [search, tableRows]);
@@ -117,13 +110,13 @@ export const ModelTable = ({ list, dialog, createDialog }: Props) => {
           <Label htmlFor="search">Search anything</Label>
           <Input id="search" value={search} onChange={(e) => setSearch(e.target.value)} />
         </div>
-        <Button onClick={createDialog.open}>Create Model</Button>
+        <Button onClick={createDialog.open}>Create Equipment Type</Button>
       </div>
       <div className="flex flex-col flex-1">
         <DataTable
-          columns={model_columns}
+          columns={equipment_type_columns}
           data={filteredProperties}
-          keyProperty="model_id"
+          keyProperty="type_id"
           meta={tableMeta}
         />
       </div>

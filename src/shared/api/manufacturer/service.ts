@@ -14,7 +14,7 @@ class ManufacturerServ {
 
   create = (body: ManufacturerCreateRequest) => AdminApi.POST_JSON<object>(prefix(), body);
 
-  delete = (body: ManufacturerDeleteRequest) => AdminApi.DELETE<object>(prefix(), { body });
+  delete = (body: ManufacturerDeleteRequest) => AdminApi.DELETE_JSON<object>(prefix(), body);
 
   update = (body: Manufacturer) => AdminApi.PUT_JSON<object>(prefix(), body);
 }

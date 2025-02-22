@@ -14,7 +14,7 @@ class EquipmentTypeServ {
 
   create = (body: EquipmentTypeCreateRequest) => AdminApi.POST_JSON<object>(prefix(), body);
 
-  delete = (body: EquipmentTypeDeleteRequest) => AdminApi.DELETE<object>(prefix(), { body });
+  delete = (body: EquipmentTypeDeleteRequest) => AdminApi.DELETE_JSON<object>(prefix(), body);
 
   update = (body: EquipmentType) => AdminApi.PUT_JSON<object>(prefix(), body);
 }
