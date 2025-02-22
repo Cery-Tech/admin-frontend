@@ -21,17 +21,19 @@ export type AdminPropertyFieldValues = Omit<
 
 export type AdminPropertyFormPack = FormPack<AdminPropertyFieldValues>;
 
+export const adminPropertyFormDefaultValues: AdminPropertyFieldValues = {
+  group: '',
+  kind: FieldPropertyType.TEXT,
+  name: '',
+  property_parameter: [],
+  property_type: [],
+  property_variant: [],
+  rate: 0,
+};
+
 export const useAdminPropertyForm = (props?: UseFormProps<AdminPropertyFieldValues>) => {
   return useForm<AdminPropertyFieldValues>({
-    defaultValues: {
-      group: '',
-      kind: FieldPropertyType.TEXT,
-      name: '',
-      property_parameter: [],
-      property_type: [],
-      property_variant: [],
-      rate: 0,
-    },
+    defaultValues: adminPropertyFormDefaultValues,
     ...props,
   });
 };

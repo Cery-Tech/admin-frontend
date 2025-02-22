@@ -1,16 +1,20 @@
 import type { AdminPropertyFieldValues } from '../../model/form';
 import type { OpenCloseProps } from '@/shared/types/ui/dialog';
 
+import { Loader2 } from 'lucide-react';
 import { memo } from 'react';
 
+import { Button } from '@/components/ui/button';
+import { DialogBody, DialogFooter, DialogTitle } from '@/components/ui/dialog';
 import { Form } from '@/components/ui/form';
+import { cn } from '@/lib/utils';
 
 import { useCreateAdminPropertyMutation } from '@/shared/api/properties/hooks';
 import { useFormPack } from '@/shared/hooks/useFormPack';
-import { AppDialog } from '@/shared/ui/dialog';
+import { BaseDialog } from '@/shared/ui/dialog';
 import { showErrorMessage, showSuccessMessage } from '@/shared/utils/toasts';
 
-import { useAdminPropertyForm } from '../../model/form';
+import { adminPropertyFormDefaultValues, useAdminPropertyForm } from '../../model/form';
 import { AdminPropertyForm } from './AdminPropertyForm';
 
 type Props = {
@@ -32,7 +36,14 @@ export const CreatePropertyDialog = memo(function CreatePropertyForm({
 
   const formPack = useFormPack(form);
 
-  const createProperty = (values: AdminPropertyFieldValues) => {
+  const clearMiscellaneous = () => {
+    form.reset({
+      ...adminPropertyFormDefaultValues,
+      property_type: form.getValues('property_type'),
+    });
+  };
+
+  const createProperty = (onSuccess?: () => void) => (values: AdminPropertyFieldValues) => {
     mutate(
       {
         property: {
@@ -52,7 +63,7 @@ export const CreatePropertyDialog = memo(function CreatePropertyForm({
       {
         onSuccess: () => {
           showSuccessMessage('Property created');
-          form.reset();
+          onSuccess?.();
         },
         onError: (err) => {
           showErrorMessage(err);
@@ -62,29 +73,66 @@ export const CreatePropertyDialog = memo(function CreatePropertyForm({
   };
 
   const closeDialog = () => {
-    form.reset();
     onClose();
   };
 
   return (
-    <AppDialog
-      isOpen={isOpen}
-      processing={isPending}
-      rightBtnTitle="Add Field"
-      slotProps={{
-        base: {
-          size: '4xl',
-        },
-      }}
-      title="Create Field"
-      onClose={closeDialog}
-      onRightBtnClick={form.handleSubmit(createProperty)}
-    >
-      <form className="py-2">
-        <Form {...form}>
-          <AdminPropertyForm existGroups={existGroups} formPack={formPack} />
-        </Form>
-      </form>
-    </AppDialog>
+    <BaseDialog isOpen={isOpen} size="4xl" onClose={closeDialog}>
+      <DialogBody>
+        <DialogTitle>Add Property</DialogTitle>
+        <form className="py-2">
+          <Form {...form}>
+            <AdminPropertyForm existGroups={existGroups} formPack={formPack} />
+          </Form>
+        </form>
+        <DialogFooter>
+          <Button className={cn('border-default-200')} variant="outline" onClick={onClose}>
+            Cancel
+          </Button>
+          <Button
+            className={cn('border-default-200')}
+            variant="ghost"
+            onClick={() => {
+              clearMiscellaneous();
+            }}
+          >
+            Reset (except types)
+          </Button>
+          <Button
+            className={cn('border-default-200')}
+            variant="destructive"
+            onClick={() => {
+              form.reset();
+            }}
+          >
+            Full Reset
+          </Button>
+          <Button
+            disabled={isPending}
+            variant="secondary"
+            onClick={form.handleSubmit(
+              createProperty(() => {
+                form.reset();
+                onClose();
+              })
+            )}
+          >
+            {isPending ? <Loader2 className="animate-spin" /> : null}
+            Create & Exit
+          </Button>
+          <Button
+            disabled={isPending}
+            onClick={form.handleSubmit(
+              createProperty(() => {
+                clearMiscellaneous();
+              })
+            )}
+          >
+            {isPending ? <Loader2 className="animate-spin" /> : null}
+            Create
+          </Button>
+        </DialogFooter>
+      </DialogBody>
+    </BaseDialog>
   );
 });
