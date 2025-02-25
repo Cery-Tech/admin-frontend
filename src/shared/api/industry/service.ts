@@ -16,7 +16,7 @@ class IndustryServ {
 
   delete = (body: IndustryDeleteRequest) => AdminApi.DELETE_JSON<object>(prefix(), body);
 
-  update = (body: Industry) => AdminApi.PUT_JSON<object>(prefix(), body);
+  update = (body: Industry) => AdminApi.PUT_JSON<object>(prefix(), { industry: body });
 }
 
 export const IndustryService = new IndustryServ();

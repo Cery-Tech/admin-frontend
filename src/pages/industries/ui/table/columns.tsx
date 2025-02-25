@@ -11,10 +11,6 @@ export const industry_columns: ColumnDef<Industry>[] = [
     accessorKey: 'name',
     header: () => <div>Name</div>,
   },
-  {
-    accessorKey: 'rate',
-    header: () => <div>Rate</div>,
-  },
 
   {
     id: 'actions',

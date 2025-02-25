@@ -16,7 +16,7 @@ class ManufacturerServ {
 
   delete = (body: ManufacturerDeleteRequest) => AdminApi.DELETE_JSON<object>(prefix(), body);
 
-  update = (body: Manufacturer) => AdminApi.PUT_JSON<object>(prefix(), body);
+  update = (body: Manufacturer) => AdminApi.PUT_JSON<object>(prefix(), { manufacturer: body });
 }
 
 export const ManufacturerService = new ManufacturerServ();

@@ -28,7 +28,6 @@ export const EditIndustryDialog = memo(function EditIndustryDialog(props: Props)
         }
       : {
           name: '',
-          rate: 0,
         },
     resetOptions: {
       keepDefaultValues: true,

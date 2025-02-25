@@ -17,21 +17,6 @@ export const IndustryForm = ({ formPack }: Props) => {
           name="name"
           render={({ field }) => <TextField {...field} label="Name" />}
         />
-
-        <FormField
-          control={formPack.control}
-          name="rate"
-          render={({ field }) => (
-            <TextField
-              {...field}
-              label="Rate"
-              min="0"
-              step="1"
-              type="number"
-              onChange={(e) => field.onChange(Math.abs(Number(e.target.value)))}
-            />
-          )}
-        />
       </div>
     </div>
   );

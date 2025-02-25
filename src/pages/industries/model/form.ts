@@ -15,14 +15,12 @@ export type IndustryFormPack = FormPack<IndustryFormValues>;
 
 const schema = zodSchema<IndustryFormValues>({
   name: z.string().nonempty('Name is required'),
-  rate: z.number().min(0, 'Rate must be positive'),
 });
 
 export const useIndustryForm = (props?: UseFormProps<IndustryFormValues>) => {
   return useForm<IndustryFormValues>({
     defaultValues: {
       name: '',
-      rate: 0,
     },
     resolver: zodResolver(schema),
     ...props,
