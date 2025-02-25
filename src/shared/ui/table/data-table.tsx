@@ -95,7 +95,7 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="rounded-md border flex flex-col overflow-auto max-h-[calc(100dvh-120px)]">
+    <div className="rounded-md border flex flex-col overflow-auto max-h-[calc(100dvh-180px)]">
       <Table className="flex-[1_0_0]">
         <TableHeader className="sticky top-0 z-[2] bg-background">
           {table.getHeaderGroups().map((headerGroup) => (

@@ -1,12 +1,4 @@
-import {
-  Briefcase,
-  Factory,
-  ForkliftIcon,
-  LinkIcon,
-  SettingsIcon,
-  TagsIcon,
-  TruckIcon,
-} from 'lucide-react';
+import { useLocation } from '@tanstack/react-router';
 
 import {
   Sidebar,
@@ -20,48 +12,11 @@ import {
   SidebarTrigger,
 } from '@/components/ui/sidebar';
 
-// Menu items.
-const items = [
-  {
-    title: 'Properties',
-    url: '/properties',
-    icon: SettingsIcon,
-  },
-  {
-    title: 'Model - Types',
-    url: '/model-types',
-    icon: LinkIcon,
-  },
-  {
-    title: 'Industries',
-    url: '/industries',
-    icon: Briefcase,
-  },
-
-  {
-    title: 'Categories',
-    url: '/categories',
-    icon: TagsIcon,
-  },
-
-  {
-    title: 'Types',
-    url: '/equipment-types',
-    icon: ForkliftIcon,
-  },
-  {
-    title: 'Manufacturers',
-    url: '/manufacturers',
-    icon: Factory,
-  },
-  {
-    title: 'Models',
-    url: '/models',
-    icon: TruckIcon,
-  },
-];
+import { NAV_BAR_CONFIG } from '../model/consts';
 
 export function AppSidebar() {
+  const pathname = useLocation().pathname;
+
   return (
     <Sidebar collapsible="icon">
       <SidebarContent>
@@ -80,9 +35,13 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
+              {NAV_BAR_CONFIG.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton
+                    asChild
+                    className="data-[selected=true]:bg-primary/10"
+                    data-selected={pathname.includes(item.url)}
+                  >
                     <a href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
