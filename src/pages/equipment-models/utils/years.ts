@@ -6,19 +6,24 @@ export const modelYearsString = {
 
     const sorted = [...years].sort((a, b) => a - b);
 
-    const ranges: [number, number][] = [];
+    const start = sorted[0];
+    const end = sorted[sorted.length - 1];
 
-    let start = sorted[0];
-    let end = sorted[0];
+    const ranges: [number, number][] = [[start, start]];
+
+    let rangeIndex = 0;
 
     for (let i = 1; i < sorted.length; i++) {
-      if (sorted[i] - sorted[i - 1] === 1) {
-        end = sorted[i];
-      } else {
-        ranges.push([start, end]);
-        start = sorted[i];
-        end = sorted[i];
+      const item = sorted[i];
+      const prevItem = sorted[i - 1];
+
+      if (item - prevItem === 1) {
+        ranges[rangeIndex][1] = item;
+        continue;
       }
+
+      ranges.push([item, item]);
+      rangeIndex++;
     }
 
     if (ranges.length === 0) {

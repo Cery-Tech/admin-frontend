@@ -9,11 +9,11 @@ import { Button } from '@/components/ui/button';
 export const manufacturer_columns: ColumnDef<Manufacturer>[] = [
   {
     accessorKey: 'name',
-    header: () => <div>Name</div>,
+    header: 'Name',
   },
   {
     accessorKey: 'rate',
-    header: () => <div>Rate</div>,
+    header: 'Rate',
   },
 
   {

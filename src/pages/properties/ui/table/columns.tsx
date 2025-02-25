@@ -10,39 +10,39 @@ import { cn } from '@/lib/utils';
 export const admin_properties_columns: ColumnDef<AdminPropertyTableItem>[] = [
   {
     accessorKey: 'property_id',
-    header: () => <div>ID</div>,
+    header: 'ID',
   },
   {
     accessorKey: 'name',
-    header: () => <div>Name</div>,
+    header: 'Name',
     cell: ({ row }) => {
       return <div className="font-medium">{row.getValue('name')}</div>;
     },
   },
   {
     accessorKey: 'kind',
-    header: () => <div>Kind</div>,
+    header: 'Kind',
     cell: ({ row }) => {
       return <div className="font-medium">{row.getValue('kind')}</div>;
     },
   },
   {
     accessorKey: 'group',
-    header: () => <div>Group</div>,
+    header: 'Group',
     cell: ({ row }) => {
       return <div className="font-medium">{row.getValue('group')}</div>;
     },
   },
   {
     accessorKey: 'rate',
-    header: () => <div>Rate</div>,
+    header: 'Rate',
     cell: ({ row }) => {
       return <div className="font-medium">{row.getValue('rate')}</div>;
     },
   },
   {
     accessorKey: 'typesText',
-    header: () => <div>Linked Types</div>,
+    header: 'Linked Types',
     cell: ({ row, table }) => {
       const meta = table.options?.meta as AdminPropertyTableMeta;
 
@@ -60,7 +60,7 @@ export const admin_properties_columns: ColumnDef<AdminPropertyTableItem>[] = [
   },
   {
     accessorKey: 'property_variant',
-    header: () => <div>Variants</div>,
+    header: 'Variants',
     cell: ({ row, table }) => {
       const meta = table.options?.meta as AdminPropertyTableMeta;
 
@@ -81,7 +81,7 @@ export const admin_properties_columns: ColumnDef<AdminPropertyTableItem>[] = [
   },
   {
     accessorKey: 'property_parameter',
-    header: () => <div>Parameters</div>,
+    header: 'Parameters',
     cell: ({ row, table }) => {
       const meta = table.options?.meta as AdminPropertyTableMeta;
 

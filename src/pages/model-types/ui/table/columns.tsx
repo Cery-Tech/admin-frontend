@@ -9,15 +9,15 @@ import { Button } from '@/components/ui/button';
 export const admin_properties_columns: ColumnDef<ModelType>[] = [
   {
     accessorKey: 'manufacturere_name',
-    header: () => <div>Make</div>,
+    header: 'Make',
   },
   {
     accessorKey: 'model_name',
-    header: () => <div>Model</div>,
+    header: 'Model',
   },
   {
     accessorKey: 'type_name',
-    header: () => <div>Type</div>,
+    header: 'Type',
   },
 
   {

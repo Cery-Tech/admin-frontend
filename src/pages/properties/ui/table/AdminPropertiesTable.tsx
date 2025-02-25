@@ -14,6 +14,7 @@ import { matchSorter, rankings } from 'match-sorter';
 import { useGetEquipmentTypes } from '@/shared/api/equipment-type/hooks';
 import { useDeleteAdminPropertyMutation } from '@/shared/api/properties/hooks';
 import useDialogState from '@/shared/hooks/useDialog';
+import { createTableFilter } from '@/shared/model/stores';
 import { AppDialog } from '@/shared/ui/dialog';
 import { DataTable } from '@/shared/ui/table';
 import { showErrorMessage, showSuccessMessage } from '@/shared/utils/toasts';
@@ -26,10 +27,14 @@ type Props = {
   createDialog: UseDialogReturn;
 };
 
+const { useFilter } = createTableFilter();
+
 export const AdminPropertiesTable = ({ properties, dialog, createDialog }: Props) => {
   const [search, setSearch] = useState('');
   const [expandedRowsSet, setExpandedRowsSet] = useState(new Set<number>());
   const { mutate: deleteRequest } = useDeleteAdminPropertyMutation();
+
+  const filters = useFilter();
 
   const confirmDialog = useDialogState<{
     children?: React.ReactNode;
@@ -158,6 +163,7 @@ export const AdminPropertiesTable = ({ properties, dialog, createDialog }: Props
           data={filteredProperties}
           keyProperty="property_id"
           meta={tableMeta}
+          {...filters}
         />
       </div>
       <AppDialog

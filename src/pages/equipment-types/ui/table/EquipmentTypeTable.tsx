@@ -14,6 +14,7 @@ import { useGetCategories } from '@/shared/api/category/hooks';
 import { useDeleteEquipmentType } from '@/shared/api/equipment-type/hooks';
 import { useGetIndustries } from '@/shared/api/industry/hooks';
 import useDialogState from '@/shared/hooks/useDialog';
+import { createTableFilter } from '@/shared/model/stores';
 import { AppDialog } from '@/shared/ui/dialog';
 import { DataTable } from '@/shared/ui/table';
 import { showErrorMessage, showSuccessMessage } from '@/shared/utils/toasts';
@@ -26,11 +27,15 @@ type Props = {
   createDialog: UseDialogReturn;
 };
 
+const { useFilter } = createTableFilter();
+
 export const EquipmentTypeTable = ({ list, dialog, createDialog }: Props) => {
   const [search, setSearch] = useState('');
   const { mutate: deleteRequest } = useDeleteEquipmentType();
   const { data } = useGetIndustries();
   const { data: categoryData } = useGetCategories();
+
+  const filter = useFilter();
 
   const confirmDialog = useDialogState<{
     children?: React.ReactNode;
@@ -118,6 +123,7 @@ export const EquipmentTypeTable = ({ list, dialog, createDialog }: Props) => {
           data={filteredProperties}
           keyProperty="type_id"
           meta={tableMeta}
+          {...filter}
         />
       </div>
       <AppDialog

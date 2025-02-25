@@ -13,6 +13,7 @@ import { matchSorter, rankings } from 'match-sorter';
 import { useGetManufacturers } from '@/shared/api/manufacturer/hooks';
 import { useDeleteModel } from '@/shared/api/model/hooks';
 import useDialogState from '@/shared/hooks/useDialog';
+import { createTableFilter } from '@/shared/model/stores';
 import { AppDialog } from '@/shared/ui/dialog';
 import { DataTable } from '@/shared/ui/table';
 import { showErrorMessage, showSuccessMessage } from '@/shared/utils/toasts';
@@ -26,10 +27,14 @@ type Props = {
   createDialog: UseDialogReturn;
 };
 
+const { useFilter } = createTableFilter();
+
 export const ModelTable = ({ list, dialog, createDialog }: Props) => {
   const [search, setSearch] = useState('');
   const { mutate: deleteRequest } = useDeleteModel();
   const { data } = useGetManufacturers();
+
+  const filter = useFilter();
 
   const confirmDialog = useDialogState<{
     children?: React.ReactNode;
@@ -125,6 +130,7 @@ export const ModelTable = ({ list, dialog, createDialog }: Props) => {
           data={filteredProperties}
           keyProperty="model_id"
           meta={tableMeta}
+          {...filter}
         />
       </div>
       <AppDialog

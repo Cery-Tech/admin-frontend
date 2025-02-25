@@ -12,6 +12,7 @@ import { matchSorter, rankings } from 'match-sorter';
 
 import { useDeleteManufacturer } from '@/shared/api/manufacturer/hooks';
 import useDialogState from '@/shared/hooks/useDialog';
+import { createTableFilter } from '@/shared/model/stores';
 import { AppDialog } from '@/shared/ui/dialog';
 import { DataTable } from '@/shared/ui/table';
 import { showErrorMessage, showSuccessMessage } from '@/shared/utils/toasts';
@@ -24,9 +25,13 @@ type Props = {
   createDialog: UseDialogReturn;
 };
 
+const { useFilter } = createTableFilter();
+
 export const ManufacturerTable = ({ list, dialog, createDialog }: Props) => {
   const [search, setSearch] = useState('');
   const { mutate: deleteRequest } = useDeleteManufacturer();
+
+  const filter = useFilter();
 
   const confirmDialog = useDialogState<{
     children?: React.ReactNode;
@@ -105,6 +110,7 @@ export const ManufacturerTable = ({ list, dialog, createDialog }: Props) => {
           data={filteredProperties}
           keyProperty="manufacturer_id"
           meta={tableMeta}
+          {...filter}
         />
       </div>
       <AppDialog

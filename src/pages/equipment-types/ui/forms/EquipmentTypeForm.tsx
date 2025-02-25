@@ -5,7 +5,7 @@ import { FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/for
 import { useGetCategories } from '@/shared/api/category/hooks';
 import { useGetIndustries } from '@/shared/api/industry/hooks';
 import { Combobox } from '@/shared/ui/combobox';
-import { TextField } from '@/shared/ui/controlled-fields/input';
+import { NumberField, TextField } from '@/shared/ui/controlled-fields/input';
 
 type Props = {
   formPack: EquipmentTypeFormPack;
@@ -63,14 +63,13 @@ export const EquipmentTypeForm = ({ formPack }: Props) => {
         <FormField
           control={formPack.control}
           name="rate"
-          render={({ field }) => (
-            <TextField
+          render={({ field: { onChange, ...field } }) => (
+            <NumberField
               {...field}
               label="Rate"
               min="0"
               step="1"
-              type="number"
-              onChange={(e) => field.onChange(Math.abs(Number(e.target.value)))}
+              onValueChange={(e) => onChange(Math.abs(Number(e.floatValue ?? 0)))}
             />
           )}
         />

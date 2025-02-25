@@ -1,9 +1,11 @@
 import type { DragItem } from '../drag-and-drop';
 import type {
+  Column,
   ColumnDef,
   ColumnFiltersState,
   GlobalFilterTableState,
   OnChangeFn,
+  RowData,
   TableMeta,
 } from '@tanstack/react-table';
 
@@ -23,10 +25,19 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { cn } from '@/lib/utils';
 
 import { DraggableItem } from '../drag-and-drop';
+import { DefaultTableFilter } from './filter';
 
-type DataTableProps<TData, TValue> = {
+declare module '@tanstack/react-table' {
+  interface ColumnMeta<TData extends RowData, TValue> {
+    className?: string;
+    headerClassName?: string;
+  }
+}
+
+type DataTableProps<TData, TValue = unknown> = {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   meta?: TableMeta<TData>;
@@ -36,6 +47,7 @@ type DataTableProps<TData, TValue> = {
   onChangeGlobalFilter?: OnChangeFn<GlobalFilterTableState>;
   getRowId?: (row: TData) => string;
   keyProperty: keyof TData;
+  Filter?: React.ComponentType<{ column: Column<TData, TValue> }>;
 } & (
   | {
       dragEnabled: true;
@@ -47,7 +59,7 @@ type DataTableProps<TData, TValue> = {
   | { dragEnabled?: false | undefined }
 );
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData, TValue = unknown>({
   columns,
   data,
   meta,
@@ -57,6 +69,7 @@ export function DataTable<TData, TValue>({
   onChangeGlobalFilter,
   getRowId,
   keyProperty,
+  Filter = DefaultTableFilter,
   ...props
 }: DataTableProps<TData, TValue>) {
   const getId = useCallback((row: TData) => String(row[keyProperty!]), [keyProperty]);
@@ -65,10 +78,13 @@ export function DataTable<TData, TValue>({
     () => [
       {
         accessorKey: 'order_num',
-        header: () => <div>#</div>,
+        header: '#',
         cell: ({ row }) => <div>{row.index + 1}</div>,
+        size: 40,
+        enableColumnFilter: false,
         meta: {
-          className: 'border-r w-4',
+          className: 'border-r w-12 max-w-12 text-right',
+          headerClassName: 'w-12 max-w-12 text-right',
         },
       } satisfies ColumnDef<TData, TValue>,
       ...columns,
@@ -96,20 +112,38 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="rounded-md border flex flex-col overflow-auto max-h-[calc(100dvh-180px)]">
-      <Table className="flex-[1_0_0]">
+      <Table className="flex-[1_0_0] table-fixed">
         <TableHeader className="sticky top-0 z-[2] bg-background">
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(header.column.columnDef.header, header.getContext())}
-                  </TableHead>
-                );
-              })}
-            </TableRow>
+            <>
+              <TableRow key={headerGroup.id} className="border-b-1">
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead
+                      key={header.id}
+                      className={cn('z-[2]', header.column.columnDef.meta?.headerClassName)}
+                    >
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(header.column.columnDef.header, header.getContext())}
+                    </TableHead>
+                  );
+                })}
+              </TableRow>
+              <TableRow key={headerGroup.id + 'filters'}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead key={header.id}>
+                      {header.column.getCanFilter() && Filter ? (
+                        <div>
+                          <Filter column={header.column as Column<TData, TValue>} />
+                        </div>
+                      ) : null}
+                    </TableHead>
+                  );
+                })}
+              </TableRow>
+            </>
           ))}
         </TableHeader>
         <TableBody>
@@ -127,7 +161,7 @@ export function DataTable<TData, TValue>({
                   onChangeOrder={props.onReorder}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} className={cell.column.columnDef.meta?.className}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
@@ -135,10 +169,7 @@ export function DataTable<TData, TValue>({
               ) : (
                 <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell
-                      key={cell.id}
-                      className={(cell.column.columnDef.meta as { className?: string })?.className}
-                    >
+                    <TableCell key={cell.id} className={cell.column.columnDef.meta?.className}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}

@@ -8,19 +8,19 @@ import { Button } from '@/components/ui/button';
 export const equipment_type_columns: ColumnDef<EquipmentTypeTableItem>[] = [
   {
     accessorKey: 'industry_name',
-    header: () => <div>Industry</div>,
+    header: 'Industry',
   },
   {
     accessorKey: 'category_name',
-    header: () => <div>Category</div>,
+    header: 'Category',
   },
   {
     accessorKey: 'name',
-    header: () => <div>Name</div>,
+    header: 'Name',
   },
   {
     accessorKey: 'rate',
-    header: () => <div>Rate</div>,
+    header: 'Rate',
   },
 
   {

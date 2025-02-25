@@ -8,19 +8,47 @@ import { Button } from '@/components/ui/button';
 export const model_columns: ColumnDef<ModelTableItem>[] = [
   {
     accessorKey: 'manufacturer_name',
-    header: () => <div>Make</div>,
+    header: 'Make',
+    meta: {
+      headerClassName: 'w-1/6',
+    },
   },
   {
     accessorKey: 'name',
-    header: () => <div>Model</div>,
+    header: 'Model',
   },
   {
     accessorKey: 'years_range',
-    header: () => <div>Years</div>,
+    header: 'Years',
+    filterFn: (row, _, filterValue) => {
+      const val = String(filterValue);
+
+      if (filterValue.startsWith('!') && filterValue.length > 1) {
+        const value = val.slice(1);
+
+        return row.original.available_years.includes(Number(value));
+      }
+
+      if (filterValue.startsWith('%') && filterValue.length > 1) {
+        const value = val.slice(1);
+
+        return row.original.available_years.some((num) => num.toString().includes(value));
+      }
+
+      if (val.length < 4) return true;
+
+      if (!Number(val)) {
+        return row.original.years_range.includes(val);
+      }
+
+      const result = row.original.available_years.includes(Number(val));
+
+      return result;
+    },
   },
   {
     accessorKey: 'rate',
-    header: () => <div>Rate</div>,
+    header: 'Rate',
   },
 
   {
