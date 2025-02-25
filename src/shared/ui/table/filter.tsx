@@ -10,7 +10,7 @@ export function DefaultTableFilter<TData, TValue = unknown>({ column }: Props<TD
   return (
     <DebouncedInput
       className="w-full p-2 py-0 h-8 border border-gray-300 rounded text-sm"
-      placeholder={`Search ${column.columnDef.header}`}
+      placeholder={`${column.columnDef.header}`}
       throttleTimeout={250}
       value={String(column.getFilterValue() || '')}
       onChangeThrottled={column.setFilterValue}

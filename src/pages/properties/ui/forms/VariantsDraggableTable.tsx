@@ -21,8 +21,6 @@ type Props = {
 export const VariantsDraggableTable = ({ value, onChange, isAvailable }: Props) => {
   const [variant, setVariant] = useState<PropertyVariant | null>(null);
 
-  console.debug('variants', value);
-
   const saveVariant = () => {
     if (!variant?.value) {
       showErrorMessage('Value is required');
@@ -64,15 +62,16 @@ export const VariantsDraggableTable = ({ value, onChange, isAvailable }: Props) 
           columns={[
             {
               accessorKey: 'position',
-              header: () => <span>Position</span>,
+              header: 'Position',
               cell: ({ row }) => <span>{row.original.position + 1}</span>,
             },
             {
               accessorKey: 'value',
-              header: () => 'Value',
+              header: 'Value',
             },
             {
               accessorKey: 'actions',
+              enableColumnFilter: false,
               header: () => '',
               cell: ({ row }) => (
                 <div className="flex gap-2 justify-end">
@@ -94,6 +93,7 @@ export const VariantsDraggableTable = ({ value, onChange, isAvailable }: Props) 
           ]}
           data={[...value].sort((a, b) => a.position - b.position)}
           dragGroupName="variants"
+          enableColumnFilters={false}
           getDragIndex={(row) =>
             value.find((item) => item.variant_id === row.variant_id)?.position ?? 0
           }

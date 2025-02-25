@@ -48,6 +48,7 @@ type DataTableProps<TData, TValue = unknown> = {
   getRowId?: (row: TData) => string;
   keyProperty: keyof TData;
   Filter?: React.ComponentType<{ column: Column<TData, TValue> }>;
+  enableColumnFilters?: boolean;
 } & (
   | {
       dragEnabled: true;
@@ -70,6 +71,7 @@ export function DataTable<TData, TValue = unknown>({
   getRowId,
   keyProperty,
   Filter = DefaultTableFilter,
+  enableColumnFilters = true,
   ...props
 }: DataTableProps<TData, TValue>) {
   const getId = useCallback((row: TData) => String(row[keyProperty!]), [keyProperty]);
@@ -100,6 +102,7 @@ export function DataTable<TData, TValue = unknown>({
     enableSorting: true,
     getRowId: getRowId ?? getId,
     enableGlobalFilter: true,
+    enableColumnFilters,
     meta,
     onColumnFiltersChange: onChangeColumnFilters,
     onGlobalFilterChange: onChangeGlobalFilter,
@@ -130,19 +133,21 @@ export function DataTable<TData, TValue = unknown>({
                   );
                 })}
               </TableRow>
-              <TableRow key={headerGroup.id + 'filters'}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.column.getCanFilter() && Filter ? (
-                        <div>
-                          <Filter column={header.column as Column<TData, TValue>} />
-                        </div>
-                      ) : null}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
+              {enableColumnFilters ? (
+                <TableRow key={headerGroup.id + 'filters'}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead key={header.id}>
+                        {header.column.getCanFilter() && Filter ? (
+                          <div>
+                            <Filter column={header.column as Column<TData, TValue>} />
+                          </div>
+                        ) : null}
+                      </TableHead>
+                    );
+                  })}
+                </TableRow>
+              ) : null}
             </>
           ))}
         </TableHeader>

@@ -11,6 +11,10 @@ export const admin_properties_columns: ColumnDef<AdminPropertyTableItem>[] = [
   {
     accessorKey: 'property_id',
     header: 'ID',
+    meta: {
+      className: 'w-16',
+      headerClassName: 'w-16',
+    },
   },
   {
     accessorKey: 'name',
@@ -22,6 +26,9 @@ export const admin_properties_columns: ColumnDef<AdminPropertyTableItem>[] = [
   {
     accessorKey: 'kind',
     header: 'Kind',
+    meta: {
+      headerClassName: 'w-32',
+    },
     cell: ({ row }) => {
       return <div className="font-medium">{row.getValue('kind')}</div>;
     },
@@ -36,6 +43,9 @@ export const admin_properties_columns: ColumnDef<AdminPropertyTableItem>[] = [
   {
     accessorKey: 'rate',
     header: 'Rate',
+    meta: {
+      headerClassName: 'w-24',
+    },
     cell: ({ row }) => {
       return <div className="font-medium">{row.getValue('rate')}</div>;
     },
@@ -50,7 +60,7 @@ export const admin_properties_columns: ColumnDef<AdminPropertyTableItem>[] = [
         <div
           className={cn(
             'font-medium',
-            meta.getRowExpanded?.(row.original.property_id) ? '' : 'max-w-sm max-h-4 truncate'
+            meta.getRowExpanded?.(row.original.property_id) ? '' : 'max-w-sm max-h-5 truncate'
           )}
         >
           {row.getValue('typesText')}

@@ -9,7 +9,7 @@ export type PropertyVariant = {
 export type BaseAdminProperty = {
   name?: string;
   kind?: FieldPropertyType;
-  group?: string;
+  group_id?: number;
   rate?: number;
   property_type?: number[];
   property_variant?: PropertyVariant[];
@@ -32,6 +32,7 @@ export type AdminPropertyTableItem = AdminProperty & {
   typesText?: string;
   propertiesText?: string;
   variantsText?: string;
+  group?: string;
 };
 
 export type GetPropertiesResponse = {

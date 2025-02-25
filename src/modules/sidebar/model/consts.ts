@@ -2,6 +2,7 @@ import {
   Briefcase,
   Factory,
   ForkliftIcon,
+  GroupIcon,
   LinkIcon,
   SettingsIcon,
   TagsIcon,
@@ -13,6 +14,11 @@ export const NAV_BAR_CONFIG = [
     title: 'Properties',
     url: '/properties',
     icon: SettingsIcon,
+  },
+  {
+    title: 'Property Groups',
+    url: '/property-groups',
+    icon: GroupIcon,
   },
   {
     title: 'Model - Types',

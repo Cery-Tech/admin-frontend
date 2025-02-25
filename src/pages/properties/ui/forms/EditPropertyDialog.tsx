@@ -17,7 +17,6 @@ import { AdminPropertyForm } from './AdminPropertyForm';
 
 type Props = {
   property: AdminProperty | null;
-  existGroups?: string[];
 } & OpenCloseProps;
 
 export const EditPropertyDialog = memo(function EditPropertyDialog(props: Props) {
@@ -42,7 +41,7 @@ export const EditPropertyDialog = memo(function EditPropertyDialog(props: Props)
       : {
           property_parameter: [],
           property_variant: [],
-          group: '',
+          group_id: 0,
           kind: FieldPropertyType.TEXT,
           name: '',
           property_type: [],
@@ -100,7 +99,7 @@ export const EditPropertyDialog = memo(function EditPropertyDialog(props: Props)
     >
       <form className="py-2">
         <Form {...form}>
-          <AdminPropertyForm existGroups={props.existGroups} formPack={formPack} />
+          <AdminPropertyForm formPack={formPack} />
         </Form>
       </form>
     </AppDialog>

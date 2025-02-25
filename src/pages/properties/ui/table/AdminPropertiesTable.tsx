@@ -13,6 +13,7 @@ import { matchSorter, rankings } from 'match-sorter';
 
 import { useGetEquipmentTypes } from '@/shared/api/equipment-type/hooks';
 import { useDeleteAdminPropertyMutation } from '@/shared/api/properties/hooks';
+import { useGetPropertyGroup } from '@/shared/api/property-group/hooks';
 import useDialogState from '@/shared/hooks/useDialog';
 import { createTableFilter } from '@/shared/model/stores';
 import { AppDialog } from '@/shared/ui/dialog';
@@ -33,6 +34,8 @@ export const AdminPropertiesTable = ({ properties, dialog, createDialog }: Props
   const [search, setSearch] = useState('');
   const [expandedRowsSet, setExpandedRowsSet] = useState(new Set<number>());
   const { mutate: deleteRequest } = useDeleteAdminPropertyMutation();
+
+  const { data: { propertyMap } = {} } = useGetPropertyGroup();
 
   const filters = useFilter();
 
@@ -112,11 +115,12 @@ export const AdminPropertiesTable = ({ properties, dialog, createDialog }: Props
         variantsText,
         propertiesText,
         typesText: linked_types?.map((type) => type.name).join(', '),
+        group: propertyMap?.[property.group_id ?? 0]?.name,
       } satisfies AdminPropertyTableItem;
     });
 
     return rows;
-  }, [properties, data]);
+  }, [properties, data, propertyMap]);
 
   const tableMeta = useMemo(() => {
     const meta: AdminPropertyTableMeta = {

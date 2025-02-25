@@ -1,6 +1,6 @@
 import type { AdminPropertyFormPack } from '../../model/form';
 
-import { CirclePlusIcon, PlusIcon, SaveIcon, TrashIcon } from 'lucide-react';
+import { CirclePlusIcon, PlusIcon, SaveIcon } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { Controller, useWatch } from 'react-hook-form';
 
@@ -17,6 +17,8 @@ import {
 
 import { useGetEquipmentTypes } from '@/shared/api/equipment-type/hooks';
 import { FieldPropertyType } from '@/shared/api/properties/consts';
+import { useCreatePropertyGroup, useGetPropertyGroup } from '@/shared/api/property-group/hooks';
+import { LoaderButton } from '@/shared/ui/buttons';
 import { TextField } from '@/shared/ui/controlled-fields/input';
 import { MultiSelect } from '@/shared/ui/multiselect';
 import { showErrorMessage } from '@/shared/utils/toasts';
@@ -26,24 +28,15 @@ import { VariantsDraggableTable } from './VariantsDraggableTable';
 
 type Props = {
   formPack: AdminPropertyFormPack;
-  existGroups?: string[];
   actions?: React.ReactNode;
 };
 
-export const AdminPropertyForm = ({ formPack, existGroups, actions }: Props) => {
+export const AdminPropertyForm = ({ formPack, actions }: Props) => {
   const [newGroup, setNewGroup] = useState<string | null>(null);
 
-  const group = formPack.watch('group') ?? '';
+  const { data: { property_group, propertyMap } = {} } = useGetPropertyGroup();
 
-  const groups = useMemo(() => {
-    const groups = new Set(existGroups);
-
-    if (group) {
-      groups.add(group);
-    }
-
-    return groups;
-  }, [existGroups, group]);
+  const { mutateAsync: createPropertyGroup, isPending } = useCreatePropertyGroup();
 
   const { data: { type: types = [] } = {} } = useGetEquipmentTypes();
 
@@ -51,7 +44,7 @@ export const AdminPropertyForm = ({ formPack, existGroups, actions }: Props) => 
     return types.map((type) => ({ ...type, number: 0 }));
   }, [types]);
 
-  const saveGroup = () => {
+  const saveGroup = async () => {
     if (!newGroup) {
       setNewGroup(null);
       showErrorMessage('Group name is required');
@@ -59,7 +52,9 @@ export const AdminPropertyForm = ({ formPack, existGroups, actions }: Props) => 
       return;
     }
 
-    formPack.setValue('group', newGroup);
+    const { property_group } = await createPropertyGroup({ name: newGroup, rate: 0 });
+
+    formPack.setValue('group_id', property_group.group_id);
     setNewGroup(null);
   };
 
@@ -78,42 +73,27 @@ export const AdminPropertyForm = ({ formPack, existGroups, actions }: Props) => 
         />
         <Controller
           control={formPack.control}
-          name="group"
+          name="group_id"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Group</FormLabel>
               <div className="flex gap-2 items-end">
                 {newGroup === null ? (
-                  <Select value={field.value} onValueChange={field.onChange}>
+                  <Select
+                    value={field.value?.toString()}
+                    onValueChange={(val) => field.onChange(Number(val) || 0)}
+                  >
                     <SelectTrigger ref={field.ref} className="flex-1" onBlur={field.onBlur}>
-                      <SelectValue>{field.value ? field.value : null}</SelectValue>
+                      <SelectValue>
+                        {field.value ? propertyMap?.[field.value]?.name : null}
+                      </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
-                      {Array.from(groups).map((group) =>
-                        group ? (
-                          <SelectItem key={group} value={group}>
-                            <div className="flex items-center justify-between">
-                              {group}
-                              {!existGroups?.includes(group) ? (
-                                <Button
-                                  className="w-6 h-6"
-                                  size="icon"
-                                  variant="destructive"
-                                  onMouseDown={(e) => {
-                                    e.preventDefault();
-                                    e.stopPropagation();
-                                    formPack.setValue('group', '');
-                                  }}
-                                >
-                                  <TrashIcon />
-                                </Button>
-                              ) : (
-                                ''
-                              )}
-                            </div>
-                          </SelectItem>
-                        ) : null
-                      )}
+                      {property_group?.map((group) => (
+                        <SelectItem key={group.group_id} value={group.group_id.toString()}>
+                          <div className="flex items-center justify-between">{group.name}</div>
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 ) : (
@@ -124,9 +104,9 @@ export const AdminPropertyForm = ({ formPack, existGroups, actions }: Props) => 
                       onChange={(e) => setNewGroup(e.target.value)}
                     />
 
-                    <Button size="icon" onClick={saveGroup}>
+                    <LoaderButton loading={isPending} size="icon" onClick={saveGroup}>
                       <SaveIcon />
-                    </Button>
+                    </LoaderButton>
                   </>
                 )}
                 {newGroup === null ? (

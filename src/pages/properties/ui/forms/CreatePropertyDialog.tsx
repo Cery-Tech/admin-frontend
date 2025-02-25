@@ -17,15 +17,9 @@ import { showErrorMessage, showSuccessMessage } from '@/shared/utils/toasts';
 import { adminPropertyFormDefaultValues, useAdminPropertyForm } from '../../model/form';
 import { AdminPropertyForm } from './AdminPropertyForm';
 
-type Props = {
-  existGroups?: string[];
-} & OpenCloseProps;
+type Props = {} & OpenCloseProps;
 
-export const CreatePropertyDialog = memo(function CreatePropertyForm({
-  existGroups,
-  isOpen,
-  onClose,
-}: Props) {
+export const CreatePropertyDialog = memo(function CreatePropertyForm({ isOpen, onClose }: Props) {
   const { mutate, isPending } = useCreateAdminPropertyMutation();
 
   const form = useAdminPropertyForm({
@@ -82,7 +76,7 @@ export const CreatePropertyDialog = memo(function CreatePropertyForm({
         <DialogTitle>Add Property</DialogTitle>
         <form className="py-2">
           <Form {...form}>
-            <AdminPropertyForm existGroups={existGroups} formPack={formPack} />
+            <AdminPropertyForm formPack={formPack} />
           </Form>
         </form>
         <DialogFooter>

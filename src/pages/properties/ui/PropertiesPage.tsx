@@ -2,8 +2,6 @@
 
 import type { AdminProperty } from '@/shared/api/properties/types';
 
-import { useMemo } from 'react';
-
 import { useGetAdminPropertiesFields } from '@/shared/api/properties/hooks';
 import useDialogState, { useDialog } from '@/shared/hooks/useDialog';
 
@@ -16,8 +14,6 @@ export const PropertiesPage = () => {
 
   const createDialog = useDialog();
 
-  const existGroups = useMemo(() => property.map((field) => field?.group ?? ''), [property]);
-
   return (
     <div className="bg-default-50 flex-1 flex flex-col">
       <div className="flex-1 flex flex-col gap-4">
@@ -26,13 +22,8 @@ export const PropertiesPage = () => {
           dialog={editDialog}
           properties={property}
         />
-        <CreatePropertyDialog
-          existGroups={existGroups}
-          isOpen={createDialog.isOpen}
-          onClose={createDialog.close}
-        />
+        <CreatePropertyDialog isOpen={createDialog.isOpen} onClose={createDialog.close} />
         <EditPropertyDialog
-          existGroups={existGroups}
           isOpen={editDialog.isOpen}
           property={editDialog.state}
           onClose={editDialog.close}

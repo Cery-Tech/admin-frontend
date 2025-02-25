@@ -63,17 +63,17 @@ export const ParametersDraggableTable = ({ value, onChange, isAvailable }: Props
           columns={[
             {
               accessorKey: 'position',
-              header: () => <span>Position</span>,
+              header: 'Position',
               cell: ({ row }) => <span>{row.original.position + 1}</span>,
             },
             {
               accessorKey: 'name',
-              header: () => 'Name',
+              header: 'Name',
             },
 
             {
               accessorKey: 'multiplier',
-              header: () => 'Multiplier',
+              header: 'Multiplier',
             },
             {
               accessorKey: 'actions',
@@ -100,6 +100,7 @@ export const ParametersDraggableTable = ({ value, onChange, isAvailable }: Props
           ]}
           data={[...value].sort((a, b) => a.position - b.position)}
           dragGroupName="variants"
+          enableColumnFilters={false}
           getDragIndex={(row) =>
             value.find((item) => item.parameter_id === row.parameter_id)?.position ?? 0
           }

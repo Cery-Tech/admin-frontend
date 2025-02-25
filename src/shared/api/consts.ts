@@ -12,6 +12,7 @@ export const QueryKeys = {
   AdminProperties: ['admin-properties'],
   ModelTypes: ['model-types'],
   Models: ['models'],
+  PropertyGroup: ['property-group'],
 };
 
 export const AuthKeys = {

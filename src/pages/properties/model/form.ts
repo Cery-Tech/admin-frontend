@@ -22,7 +22,7 @@ export type AdminPropertyFieldValues = Omit<
 export type AdminPropertyFormPack = FormPack<AdminPropertyFieldValues>;
 
 export const adminPropertyFormDefaultValues: AdminPropertyFieldValues = {
-  group: '',
+  group_id: 0,
   kind: FieldPropertyType.TEXT,
   name: '',
   property_parameter: [],
