@@ -21,6 +21,10 @@ export const modelYearsString = {
       }
     }
 
+    if (ranges.length === 0) {
+      ranges.push([start, end]);
+    }
+
     return ranges
       .map(([start, end]) => {
         if (start === end) {
