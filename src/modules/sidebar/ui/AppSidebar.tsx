@@ -1,4 +1,4 @@
-import { useLocation } from '@tanstack/react-router';
+import { Link, useLocation } from '@tanstack/react-router';
 
 import {
   Sidebar,
@@ -42,10 +42,10 @@ export function AppSidebar() {
                     className="data-[selected=true]:bg-primary/10"
                     data-selected={pathname.includes(item.url)}
                   >
-                    <a href={item.url}>
+                    <Link to={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
