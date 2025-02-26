@@ -72,7 +72,7 @@ export const VariantsDraggableTable = ({ value, onChange, isAvailable }: Props) 
             {
               accessorKey: 'actions',
               enableColumnFilter: false,
-              header: () => '',
+              header: '',
               cell: ({ row }) => (
                 <div className="flex gap-2 justify-end">
                   <Button size="icon" variant="outline" onClick={() => setVariant(row.original)}>
@@ -98,6 +98,7 @@ export const VariantsDraggableTable = ({ value, onChange, isAvailable }: Props) 
             value.find((item) => item.variant_id === row.variant_id)?.position ?? 0
           }
           getUniqueRowId={(row) => row.uniqueId}
+          headRowClassName="h-8"
           keyProperty="uniqueId"
           onReorder={(prev, next) =>
             onChange(

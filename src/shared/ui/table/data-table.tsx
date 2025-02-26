@@ -15,7 +15,7 @@ import {
   getFilteredRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { useCallback, useMemo } from 'react';
+import { Fragment, useCallback, useMemo } from 'react';
 
 import {
   Table,
@@ -49,6 +49,7 @@ type DataTableProps<TData, TValue = unknown> = {
   keyProperty: keyof TData;
   Filter?: React.ComponentType<{ column: Column<TData, TValue> }>;
   enableColumnFilters?: boolean;
+  headRowClassName?: string;
 } & (
   | {
       dragEnabled: true;
@@ -72,6 +73,7 @@ export function DataTable<TData, TValue = unknown>({
   keyProperty,
   Filter = DefaultTableFilter,
   enableColumnFilters = true,
+  headRowClassName,
   ...props
 }: DataTableProps<TData, TValue>) {
   const getId = useCallback((row: TData) => String(row[keyProperty!]), [keyProperty]);
@@ -86,7 +88,7 @@ export function DataTable<TData, TValue = unknown>({
         enableColumnFilter: false,
         meta: {
           className: 'border-r w-12 max-w-12 text-right',
-          headerClassName: 'w-12 max-w-12 text-right',
+          headerClassName: 'w-12 max-w-12 text-right h-6',
         },
       } satisfies ColumnDef<TData, TValue>,
       ...columns,
@@ -118,12 +120,12 @@ export function DataTable<TData, TValue = unknown>({
       <Table className="flex-[1_0_0] table-fixed">
         <TableHeader className="sticky top-0 z-[2] bg-background">
           {table.getHeaderGroups().map((headerGroup) => (
-            <>
-              <TableRow key={headerGroup.id} className="border-b-1">
+            <Fragment key={headerGroup.id}>
+              <TableRow key={headerGroup.id} className={cn('border-b-1 h-10', headRowClassName)}>
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead
-                      key={header.id}
+                      key={header.column.id}
                       className={cn('z-[2]', header.column.columnDef.meta?.headerClassName)}
                     >
                       {header.isPlaceholder
@@ -148,7 +150,7 @@ export function DataTable<TData, TValue = unknown>({
                   })}
                 </TableRow>
               ) : null}
-            </>
+            </Fragment>
           ))}
         </TableHeader>
         <TableBody>
@@ -183,7 +185,7 @@ export function DataTable<TData, TValue = unknown>({
             )
           ) : (
             <TableRow>
-              <TableCell className="h-24 text-center" colSpan={columns.length}>
+              <TableCell className="h-24 text-center" colSpan={_columns.length}>
                 No results.
               </TableCell>
             </TableRow>

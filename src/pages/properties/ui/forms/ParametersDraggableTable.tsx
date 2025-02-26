@@ -77,7 +77,7 @@ export const ParametersDraggableTable = ({ value, onChange, isAvailable }: Props
             },
             {
               accessorKey: 'actions',
-              header: () => '',
+              header: '',
               cell: ({ row }) => (
                 <div className="flex gap-2 justify-end">
                   <Button size="icon" variant="outline" onClick={() => setParameter(row.original)}>
@@ -105,6 +105,7 @@ export const ParametersDraggableTable = ({ value, onChange, isAvailable }: Props
             value.find((item) => item.parameter_id === row.parameter_id)?.position ?? 0
           }
           getUniqueRowId={(row) => row.uniqueId}
+          headRowClassName="h-8"
           keyProperty="uniqueId"
           onReorder={(prev, next) =>
             onChange(
