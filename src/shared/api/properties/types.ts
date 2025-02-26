@@ -14,6 +14,7 @@ export type BaseAdminProperty = {
   property_type?: number[];
   property_variant?: PropertyVariant[];
   property_parameter?: PropertyPrarmeter[];
+  is_filterable?: boolean;
 };
 
 export type PropertyPrarmeter = {

@@ -5,7 +5,8 @@ import { useMemo, useState } from 'react';
 import { Controller, useWatch } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
-import { FormField, FormItem, FormLabel } from '@/components/ui/form';
+import { Checkbox } from '@/components/ui/checkbox';
+import { FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import {
   Select,
@@ -65,7 +66,7 @@ export const AdminPropertyForm = ({ formPack, actions }: Props) => {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="grid grid-cols-[repeat(auto-fit,_minmax(300px,_1fr))] gap-4">
+      <div className="grid grid-cols-[repeat(auto-fit,_minmax(220px,_1fr))] gap-4">
         <FormField
           control={formPack.control}
           name="name"
@@ -163,6 +164,19 @@ export const AdminPropertyForm = ({ formPack, actions }: Props) => {
               value={field.value || ''}
               onValueChange={(e) => onChange(Math.abs(Number(e.floatValue ?? 0)))}
             />
+          )}
+        />
+
+        <FormField
+          control={formPack.control}
+          name="is_filterable"
+          render={({ field }) => (
+            <FormItem className="flex items-center gap-2 mt-6 space-y-0">
+              <FormControl className="flex items-center">
+                <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+              </FormControl>
+              <FormLabel>Filterable (will be in sidebar filter)</FormLabel>
+            </FormItem>
           )}
         />
       </div>

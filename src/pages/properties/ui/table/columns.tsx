@@ -2,9 +2,11 @@ import type { AdminPropertyTableMeta } from './types';
 import type { AdminPropertyTableItem } from '@/shared/api/properties/types';
 import type { ColumnDef } from '@tanstack/react-table';
 
-import { EditIcon, LucideChevronsUpDown, TrashIcon } from 'lucide-react';
+import { TooltipTrigger } from '@radix-ui/react-tooltip';
+import { EditIcon, ListFilterPlusIcon, LucideChevronsUpDown, TrashIcon } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 
 export const admin_properties_columns: ColumnDef<AdminPropertyTableItem>[] = [
@@ -108,6 +110,27 @@ export const admin_properties_columns: ColumnDef<AdminPropertyTableItem>[] = [
             .join(', ')}
         </div>
       );
+    },
+  },
+  {
+    accessorKey: 'is_filterbale',
+    header: () => (
+      <Tooltip>
+        <TooltipTrigger>
+          <ListFilterPlusIcon />
+        </TooltipTrigger>
+        <TooltipContent>
+          <div>Filterable</div>
+          <div className="text-xs text-gray-500">Will be in sidebar filter</div>
+        </TooltipContent>
+      </Tooltip>
+    ),
+    enableColumnFilter: false,
+    meta: {
+      headerClassName: 'w-8',
+    },
+    cell: ({ row }) => {
+      return row.original.is_filterable && <div className="font-medium">✔</div>;
     },
   },
   {

@@ -29,6 +29,7 @@ export const adminPropertyFormDefaultValues: AdminPropertyFieldValues = {
   property_type: [],
   property_variant: [],
   rate: 0,
+  is_filterable: true,
 };
 
 export const useAdminPropertyForm = (props?: UseFormProps<AdminPropertyFieldValues>) => {
