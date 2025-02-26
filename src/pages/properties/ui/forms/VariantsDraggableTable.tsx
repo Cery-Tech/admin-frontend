@@ -63,6 +63,9 @@ export const VariantsDraggableTable = ({ value, onChange, isAvailable }: Props) 
             {
               accessorKey: 'position',
               header: 'Position',
+              meta: {
+                headerClassName: 'w-16 text-right',
+              },
               cell: ({ row }) => <span>{row.original.position + 1}</span>,
             },
             {
@@ -75,10 +78,16 @@ export const VariantsDraggableTable = ({ value, onChange, isAvailable }: Props) 
               header: '',
               cell: ({ row }) => (
                 <div className="flex gap-2 justify-end">
-                  <Button size="icon" variant="outline" onClick={() => setVariant(row.original)}>
+                  <Button
+                    className="size-7"
+                    size="icon"
+                    variant="outline"
+                    onClick={() => setVariant(row.original)}
+                  >
                     <EditIcon />
                   </Button>
                   <Button
+                    className="size-7"
                     size="icon"
                     variant="destructive"
                     onClick={() =>
@@ -100,6 +109,7 @@ export const VariantsDraggableTable = ({ value, onChange, isAvailable }: Props) 
           getUniqueRowId={(row) => row.uniqueId}
           headRowClassName="h-8"
           keyProperty="uniqueId"
+          rowClassName="h-8"
           onReorder={(prev, next) =>
             onChange(
               changeDragItemOrder(

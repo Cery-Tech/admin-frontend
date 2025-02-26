@@ -50,6 +50,7 @@ type DataTableProps<TData, TValue = unknown> = {
   Filter?: React.ComponentType<{ column: Column<TData, TValue> }>;
   enableColumnFilters?: boolean;
   headRowClassName?: string;
+  rowClassName?: string;
 } & (
   | {
       dragEnabled: true;
@@ -74,6 +75,7 @@ export function DataTable<TData, TValue = unknown>({
   Filter = DefaultTableFilter,
   enableColumnFilters = true,
   headRowClassName,
+  rowClassName,
   ...props
 }: DataTableProps<TData, TValue>) {
   const getId = useCallback((row: TData) => String(row[keyProperty!]), [keyProperty]);
@@ -162,6 +164,7 @@ export function DataTable<TData, TValue = unknown>({
                   Content={({ children }) => <>{children}</>}
                   Wrapper={TableRow}
                   acceptTarget={props.dragGroupName}
+                  className={rowClassName}
                   data-state={row.getIsSelected() && 'selected'}
                   dragIndex={props.getDragIndex(row.original)}
                   uniqueId={props.getUniqueRowId(row.original)}
@@ -174,7 +177,11 @@ export function DataTable<TData, TValue = unknown>({
                   ))}
                 </DraggableItem>
               ) : (
-                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+                <TableRow
+                  key={row.id}
+                  className={rowClassName}
+                  data-state={row.getIsSelected() && 'selected'}
+                >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className={cell.column.columnDef.meta?.className}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}

@@ -27,6 +27,7 @@ export const ManufacturerForm = ({ formPack }: Props) => {
               label="Rate"
               min="0"
               step="1"
+              value={field.value || ''}
               onValueChange={(e) => onChange(Math.abs(Number(e.floatValue ?? 0)))}
             />
           )}

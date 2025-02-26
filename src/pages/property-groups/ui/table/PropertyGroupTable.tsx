@@ -90,7 +90,7 @@ export const PropertyGroupTable = ({ list, dialog, createDialog }: Props) => {
     }
 
     return matchSorter(tableRows, search, {
-      keys: ['name'],
+      keys: ['name', 'rate'],
       threshold: rankings.CONTAINS,
     });
   }, [search, tableRows]);

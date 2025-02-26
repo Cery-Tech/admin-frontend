@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { FormLabel } from '@/components/ui/form';
 
-import { TextField } from '@/shared/ui/controlled-fields/input';
+import { NumberField, TextField } from '@/shared/ui/controlled-fields/input';
 import { changeDragItemOrder } from '@/shared/ui/drag-and-drop';
 import { DataTable } from '@/shared/ui/table';
 import { showErrorMessage } from '@/shared/utils/toasts';
@@ -64,6 +64,9 @@ export const ParametersDraggableTable = ({ value, onChange, isAvailable }: Props
             {
               accessorKey: 'position',
               header: 'Position',
+              meta: {
+                headerClassName: 'w-16 text-right',
+              },
               cell: ({ row }) => <span>{row.original.position + 1}</span>,
             },
             {
@@ -80,10 +83,16 @@ export const ParametersDraggableTable = ({ value, onChange, isAvailable }: Props
               header: '',
               cell: ({ row }) => (
                 <div className="flex gap-2 justify-end">
-                  <Button size="icon" variant="outline" onClick={() => setParameter(row.original)}>
+                  <Button
+                    className="size-7"
+                    size="icon"
+                    variant="outline"
+                    onClick={() => setParameter(row.original)}
+                  >
                     <EditIcon />
                   </Button>
                   <Button
+                    className="size-7"
                     size="icon"
                     variant="destructive"
                     onClick={() =>
@@ -107,6 +116,7 @@ export const ParametersDraggableTable = ({ value, onChange, isAvailable }: Props
           getUniqueRowId={(row) => row.uniqueId}
           headRowClassName="h-8"
           keyProperty="uniqueId"
+          rowClassName="h-8"
           onReorder={(prev, next) =>
             onChange(
               changeDragItemOrder(
@@ -142,16 +152,16 @@ export const ParametersDraggableTable = ({ value, onChange, isAvailable }: Props
                 wrapperProps={{ className: 'flex-1' }}
                 onChange={(e) => setParameter({ ...parameter, name: e.target.value })}
               />
-              <TextField
+              <NumberField
+                valueIsNumericString
                 className="w-full"
                 label="Multiplier"
-                type="number"
-                value={parameter.multiplier}
+                value={parameter.multiplier || ''}
                 wrapperProps={{ className: 'flex-1' }}
-                onChange={(e) =>
+                onValueChange={(e) =>
                   setParameter({
                     ...parameter,
-                    multiplier: Math.abs(Number(e.target.value)),
+                    multiplier: Math.abs(Number(e.floatValue ?? 0)),
                   })
                 }
               />

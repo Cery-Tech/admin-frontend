@@ -150,6 +150,7 @@ export const AdminPropertyForm = ({ formPack, actions }: Props) => {
             </FormItem>
           )}
         />
+
         <FormField
           control={formPack.control}
           name="rate"
@@ -157,8 +158,10 @@ export const AdminPropertyForm = ({ formPack, actions }: Props) => {
             <NumberField
               {...field}
               label="Rate"
-              value={field.value ?? 0}
-              onValueChange={(val) => onChange(Math.abs(val.floatValue ?? 0))}
+              min="0"
+              step="1"
+              value={field.value || ''}
+              onValueChange={(e) => onChange(Math.abs(Number(e.floatValue ?? 0)))}
             />
           )}
         />
