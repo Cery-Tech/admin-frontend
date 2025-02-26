@@ -19,7 +19,7 @@ import { useGetEquipmentTypes } from '@/shared/api/equipment-type/hooks';
 import { FieldPropertyType } from '@/shared/api/properties/consts';
 import { useCreatePropertyGroup, useGetPropertyGroup } from '@/shared/api/property-group/hooks';
 import { LoaderButton } from '@/shared/ui/buttons';
-import { TextField } from '@/shared/ui/controlled-fields/input';
+import { NumberField, TextField } from '@/shared/ui/controlled-fields/input';
 import { MultiSelect } from '@/shared/ui/multiselect';
 import { showErrorMessage } from '@/shared/utils/toasts';
 
@@ -65,7 +65,7 @@ export const AdminPropertyForm = ({ formPack, actions }: Props) => {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="grid grid-cols-[repeat(auto-fit,_minmax(180px,_1fr))] gap-4">
+      <div className="grid grid-cols-[repeat(auto-fit,_minmax(300px,_1fr))] gap-4">
         <FormField
           control={formPack.control}
           name="name"
@@ -148,6 +148,18 @@ export const AdminPropertyForm = ({ formPack, actions }: Props) => {
                 </SelectContent>
               </Select>
             </FormItem>
+          )}
+        />
+        <FormField
+          control={formPack.control}
+          name="rate"
+          render={({ field: { onChange, ...field } }) => (
+            <NumberField
+              {...field}
+              label="Rate"
+              value={field.value ?? 0}
+              onValueChange={(val) => onChange(Math.abs(val.floatValue ?? 0))}
+            />
           )}
         />
       </div>

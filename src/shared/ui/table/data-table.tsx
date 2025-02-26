@@ -139,7 +139,7 @@ export function DataTable<TData, TValue = unknown>({
                 <TableRow key={headerGroup.id + 'filters'}>
                   {headerGroup.headers.map((header) => {
                     return (
-                      <TableHead key={header.id}>
+                      <TableHead key={header.id} className="h-10">
                         {header.column.getCanFilter() && Filter ? (
                           <div>
                             <Filter column={header.column as Column<TData, TValue>} />

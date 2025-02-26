@@ -93,7 +93,7 @@ export const EditPropertyDialog = memo(function EditPropertyDialog(props: Props)
           size: '4xl',
         },
       }}
-      title={`Edit ${props.property?.name ?? 'Property'}`}
+      title={`Edit ${props.property?.name ? `${props.property.name}${props.property.rate ? ` - ${props.property.rate}` : ''}` : 'Property'}`}
       onClose={closeDialog}
       onRightBtnClick={form.handleSubmit(updateForm)}
     >
